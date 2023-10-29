@@ -1,7 +1,7 @@
 function AboutMe() {
   return (
     <section className="about-me">
-      <h2 className="section-title">Студент</h2>
+      <h2 className="section-title" id="about-me">Студент</h2>
       <div className="about-me__container">
         <div className="about-me__text">
           <h3 className="about-me__name">Виталий</h3>
@@ -13,7 +13,7 @@ function AboutMe() {
             С 2015 года работал в компании «СКБ Контур». После того, как прошёл курс
             по веб-разработке, начал заниматься фриланс-заказами и ушёл с постоянной работы.
           </p>
-          <a href="#" className="about-me__link">Github</a>
+          <a href="https://github.com/ARDineev/" className="about-me__link">Github</a>
         </div>
         <div className="about-me__photo"></div>
       </div>

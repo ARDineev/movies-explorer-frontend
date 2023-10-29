@@ -1,27 +1,36 @@
-import Header from '../Header/Header';
-import Promo from '../Promo/Promo';
-import AboutProject from '../AboutProject/AboutProject';
-import Techs from '../Techs/Techs';
-import AboutMe from '../AboutMe/AboutMe';
-import Portfolio from '../Portfolio/Portfolio';
+import React from 'react';
 import Main from '../Main/Main';
 import Movies from '../Movies/Movies';
 import Profile from '../Profile/Profile';
-import Footer from '../Footer/Footer';
+import SavedMovies from '../SavedMovies/SavedMovies';
+import Login from '../Login/Login';
+import Register from '../Register/Register';
+import NotFound from '../NotFound/NotFound';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 
 function App() {
+
+  const [loggedIn, setLoggedIn] = React.useState(true);
+
+  function handleLogIn() {
+    setLoggedIn(true);
+  }
+
+  function handleLogOut() {
+    setLoggedIn(false);
+  }
+
   return (
     <>
-      <Header />
       <Routes>
-        <Route path="/" element={<Main/>}/>
-        <Route path="/movies" element={<Movies/>}/>
-        <Route path="/profile" element={<Profile/>}/>
+        <Route exact path="/" element={<Main loggedIn={loggedIn} />} />
+        <Route exact path="/movies" element={<Movies loggedIn={loggedIn} />} />
+        <Route exact path="/saved-movies" element={<SavedMovies loggedIn={loggedIn} />} />
+        <Route exact path="/profile" element={<Profile handleLogOut={handleLogOut} loggedIn={loggedIn} />} />
+        <Route exact path="/signin" element={<Login/>} />
+        <Route exact path="/signup" element={<Register/>} />
+        <Route path="*" element={<NotFound/>} />
       </Routes>
-
-      <Footer />
-
     </>
   );
 }

@@ -17,6 +17,11 @@
 @import url(./components/MoviesCard/MoviesCard.css);
 @import url(./components/Footer/Footer.css);
 @import url(./components/Profile/Profile.css);
+@import url(./components/SavedMovies/SavedMovies.css);
+@import url(./components/Login/Login.css);
+@import url(./components/Auth/Auth.css);
+@import url(./components/NotFound/NotFound.css);
+@import url(./components/Navigation/Navigation.css);
 
 body {
   margin: 0;

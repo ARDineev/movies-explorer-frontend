@@ -4,7 +4,7 @@ import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 
 
-function Movies({ loggedIn }) {
+function SavedMovies({ loggedIn }) {
   return (
     <>
       <Header loggedIn={loggedIn} />
@@ -15,4 +15,4 @@ function Movies({ loggedIn }) {
   )
 }
 
-export default Movies;
+export default SavedMovies;

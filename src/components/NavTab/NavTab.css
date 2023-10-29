@@ -2,10 +2,29 @@
   margin-top: 151px;
 }
 
+@media screen and (max-width: 800px) {
+  .nav-tab {
+    margin-top: 314px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .nav-tab {
+    margin-top: 212px;
+  }
+}
+
 .nav-tab__ul {
+  padding: 0;
   margin: 0;
   display: flex;
   gap: 10px;
+}
+
+@media screen and (max-width: 500px) {
+  .nav-tab__ul {
+    gap: 6px;
+  }
 }
 
 .nav-tab__li {
@@ -20,6 +39,14 @@
   align-items: center;
 }
 
+@media screen and (max-width: 500px) {
+  .nav-tab__li {
+    min-width: 82px;
+    height: 26px;
+    border-radius: 6px;
+  }
+}
+
 .nav-tab__link {
   all: unset;
   font-size: 12px;
@@ -27,4 +54,15 @@
   font-weight: 500;
   line-height: 16px;
   cursor: pointer;
+  transition: 0.5s;
+}
+
+@media screen and (max-width: 500px) {
+  .nav-tab__link {
+    font-size: 10px;
+  }
+}
+
+.nav-tab__link:hover {
+  opacity: 0.7;
 }
