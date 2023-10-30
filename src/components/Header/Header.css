@@ -2,7 +2,7 @@
   width: 100vw;
   max-width: 1140px;
   box-sizing: border-box;
-  margin: 18px auto;
+  margin: 18px 0 18px;
   display: flex;
   justify-content: space-between;
   align-items: center;

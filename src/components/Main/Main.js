@@ -11,9 +11,9 @@ function Main({ loggedIn }) {
     <>
       <Header loggedIn={loggedIn} />
       <Promo />
-{/*       <AboutProject />
-      <Techs />
-      <AboutMe />
+      <AboutProject />
+       <Techs />
+{/*      <AboutMe />
       <Portfolio />
       <Footer /> */}
     </>

@@ -10,3 +10,22 @@
   letter-spacing: -0.88px;
   border-bottom: 1px solid #DADADA;
 }
+
+@media screen and (max-width: 1250px) {
+  .section-title {
+    width: calc(100vw - 100px);
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .section-title {
+    font-size: 18px;
+    width: calc(100vw - 36px);
+  }
+}
+
+@media screen and (max-width: 500px) {
+  #techs {
+    border-bottom: 1px solid #000;
+  }
+}

@@ -3,6 +3,31 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 1140px;
+}
+
+@media screen and (max-width: 1240px) {
+  .about-project {
+    width: calc(100vw - 100px);
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .about-project {
+    margin-top: 90px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .about-project {
+    margin-top: 70px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .about-project {
+    width: calc(100vw - 36px);
+  }
 }
 
 .about-project__description {
@@ -12,6 +37,21 @@
   grid-template-columns: 1fr 1fr;
   row-gap: 26px;
   column-gap: 40px;
+  width: 100%;
+}
+
+@media screen and (max-width: 800px) {
+  .about-project__description {
+    row-gap: 22px;
+    column-gap: 30px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .about-project__description {
+    grid-template-columns: 1fr;
+    row-gap: 16px;
+  }
 }
 
 .about-project__caption {
@@ -23,12 +63,42 @@
   letter-spacing: -0.8px;
 }
 
+@media screen and (max-width: 500px) {
+  .about-project__caption {
+    font-size: 18px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .about-project__caption_row_three {
+    padding-top: 40px;
+  }
+}
+
 .about-project__annotation {
   margin: 0;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
   line-height: 20px;
+}
+
+@media screen and (max-width: 800px) {
+  .about-project__annotation {
+    font-size: 12px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .about-project__annotation {
+    font-size: 11px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .about-project__annotation_row_two {
+    grid-row: 2;
+  }
 }
 
 .about-project__scheme {
@@ -39,6 +109,21 @@
   grid-template-columns: 1fr 4fr;
   justify-items: center;
   align-items: center;
+  width: 100%;
+}
+
+@media screen and (max-width: 800px) {
+  .about-project__scheme {
+    padding-top: 93px;
+    padding-bottom: 80px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .about-project__scheme {
+    padding-top: 60px;
+    padding-bottom: 60px;
+  }
 }
 
 .about-project__duration {
@@ -54,6 +139,12 @@
   text-align: center;
 }
 
+@media screen and (max-width: 500px) {
+  .about-project__duration {
+    font-size: 11px;
+  }
+}
+
 .about-project__duration_color_green {
   background-color: #3DDC84;
   color: #000;
@@ -64,9 +155,17 @@
 }
 
 .about-project__stage {
+  margin: 0;
+  padding: 11px 0 11px;
   font-size: 14px;
   font-style: normal;
   font-weight: 500;
   line-height: 17px;
   color: #8B8B8B;
+}
+
+@media screen and (max-width: 500px) {
+  .about-project__stage {
+    font-size: 11px;
+  }
 }
