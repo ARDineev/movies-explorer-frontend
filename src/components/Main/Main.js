@@ -13,8 +13,8 @@ function Main({ loggedIn }) {
       <Promo />
       <AboutProject />
        <Techs />
-{/*      <AboutMe />
-      <Portfolio />
+      <AboutMe />
+{/*      <Portfolio />
       <Footer /> */}
     </>
   )
