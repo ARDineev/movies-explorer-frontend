@@ -12,10 +12,10 @@ function Main({ loggedIn }) {
       <Header loggedIn={loggedIn} />
       <Promo />
       <AboutProject />
-       <Techs />
+      <Techs />
       <AboutMe />
-{/*      <Portfolio />
-      <Footer /> */}
+      <Portfolio />
+      <Footer />
     </>
   )
 }

@@ -6,15 +6,11 @@ import SavedMovies from '../SavedMovies/SavedMovies';
 import Login from '../Login/Login';
 import Register from '../Register/Register';
 import NotFound from '../NotFound/NotFound';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 
 function App() {
 
   const [loggedIn, setLoggedIn] = React.useState(true);
-
-  function handleLogIn() {
-    setLoggedIn(true);
-  }
 
   function handleLogOut() {
     setLoggedIn(false);

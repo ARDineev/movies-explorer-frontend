@@ -51,6 +51,7 @@
   .about-project__description {
     grid-template-columns: 1fr;
     row-gap: 16px;
+    padding-top: 60px;
   }
 }
 
@@ -92,6 +93,7 @@
 @media screen and (max-width: 500px) {
   .about-project__annotation {
     font-size: 11px;
+    line-height: 16px;
   }
 }
 
@@ -114,15 +116,16 @@
 
 @media screen and (max-width: 800px) {
   .about-project__scheme {
-    padding-top: 93px;
+    padding-top: 88px;
     padding-bottom: 80px;
   }
 }
 
 @media screen and (max-width: 500px) {
   .about-project__scheme {
-    padding-top: 60px;
-    padding-bottom: 60px;
+    padding-top: 62px;
+    padding-bottom: 56px;
+    grid-template-columns: 1fr 2fr;
   }
 }
 
@@ -142,6 +145,7 @@
 @media screen and (max-width: 500px) {
   .about-project__duration {
     font-size: 11px;
+    padding-top: 11px;
   }
 }
 

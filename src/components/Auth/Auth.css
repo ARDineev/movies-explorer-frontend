@@ -5,6 +5,19 @@
   flex-direction: column;
 }
 
+@media screen and (max-width: 800px) {
+  .auth {
+    margin: 232px 0 70px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .auth {
+    width: 260px;
+    margin: 57px 0 70px;
+  }
+}
+
 .auth__logo {
   width: 38px;
   height: 38px;
@@ -14,6 +27,12 @@
   background-image: url(../../images/header-logo.svg);
   cursor: pointer;
   transition: 0.5s;
+}
+
+@media screen and (max-width: 500px) {
+  .auth__logo {
+    align-self: center;
+  }
 }
 
 .auth__logo:hover {
@@ -26,13 +45,26 @@
   font-weight: 500;
   line-height: normal;
   margin: 0;
-  padding: 40px 0 30px;
+  padding: 40px 0 21px;
+}
+
+@media screen and (max-width: 500px) {
+  .auth__title {
+    text-align: center;
+    padding: 48px 0 59px;
+  }
 }
 
 .auth__input-container {
   display: flex;
   flex-direction: column;
-  height: 323px;
+  height: 353px;
+}
+
+@media screen and (max-width: 500px) {
+  .auth__input-container {
+    height: 443px;
+  }
 }
 
 .auth__input-caption {
@@ -59,6 +91,12 @@
   box-sizing: border-box;
 }
 
+@media screen and (max-width: 500px) {
+  .auth__input {
+    width: 260px;
+  }
+}
+
 .auth__btn {
   all: unset;
   width: 396px;
@@ -72,6 +110,13 @@
   line-height: normal;
   cursor: pointer;
   transition: 0.5s;
+}
+
+@media screen and (max-width: 500px) {
+  .auth__btn {
+    width: 260px;
+    font-size: 12px;
+  }
 }
 
 .auth__btn:hover {
@@ -94,6 +139,12 @@
   line-height: normal;
 }
 
+@media screen and (max-width: 500px) {
+  .auth__text {
+    font-size: 12px;
+  }
+}
+
 .auth__link {
   all: unset;
   color: #4285F4;
@@ -103,6 +154,12 @@
   line-height: normal;
   cursor: pointer;
   transition: 0.5s;
+}
+
+@media screen and (max-width: 500px) {
+  .auth__link {
+    font-size: 12px;
+  }
 }
 
 .auth__link:hover {

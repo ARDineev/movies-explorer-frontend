@@ -30,13 +30,14 @@
 @media screen and (max-width: 500px) {
   .navigation__container {
     width: 100%;
+    padding: 143px 0 0;
   }
 }
 
 .navigation__close-btn {
   all: unset;
-  width: 22px;
-  height: 22px;
+  width: 33px;
+  height: 33px;
   position: absolute;
   top: 22px;
   right: 22px;
@@ -80,4 +81,10 @@
 
 .navigation__link:nth-child(3) {
   padding-bottom: 621px;
+}
+
+@media screen and (max-width: 500px) {
+  .navigation__link:nth-child(3) {
+    padding-bottom: 441px;
+  }
 }

@@ -1,6 +1,6 @@
 .movies-card {
   list-style-type: none;
-  width: 360px;
+  width: 100%;
   position: relative;
   cursor: pointer;
 }
@@ -8,11 +8,22 @@
 .movies-card__caption {
   display: flex;
   justify-content: space-between;
-  padding: 14px 14px 0;
+  padding: 12px 14px 0;
+}
+
+@media screen and (max-width: 800px) {
+  .movies-card__caption {
+    padding: 23px 0 0;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .movies-card__caption {
+    padding: 16px 0 0;
+  }
 }
 
 .movies-card__image {
-  height: 201px;
   max-width: 100%;
   aspect-ratio: 360/201;
   object-fit: cover;
@@ -24,7 +35,12 @@
   font-size: 13px;
   font-style: normal;
   font-weight: 500;
-  line-height: normal;
+}
+
+@media screen and (max-width: 500px) {
+  .movies-card__title {
+    font-size: 12px;
+  }
 }
 
 .movies-card__duration {

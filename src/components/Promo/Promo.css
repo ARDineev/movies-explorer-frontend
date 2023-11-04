@@ -17,6 +17,7 @@
 
 @media screen and (max-width: 500px) {
   .promo {
+    margin-top: 14px;
     width: calc(100vw - 27px);
   }
 }
@@ -51,6 +52,8 @@
     padding-top: 350px;
     font-size: 40px;
     width: 660px;
+    line-height: 52px;
+    min-height: 104px;
   }
 }
 
@@ -66,5 +69,7 @@
     padding-top: 220px;
     font-size: 29px;
     width: 100%;
+    line-height: 37px;
+    letter-spacing: -1.16px;
   }
 }

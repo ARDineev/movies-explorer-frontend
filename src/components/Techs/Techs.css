@@ -22,6 +22,7 @@
 @media screen and (max-width: 500px) {
   .techs {
     background-color: #202020;
+    padding-top: 70px;
   }
 }
 
@@ -35,10 +36,17 @@
   letter-spacing: -2px;
 }
 
+@media screen and (max-width: 800px) {
+  .techs__title {
+    padding-top: 80px;
+  }
+}
+
 @media screen and (max-width: 500px) {
   .techs__title {
     font-size: 30px;
-    padding-top: 80px;
+    padding-top: 60px;
+    line-height: normal;
   }
 }
 
@@ -66,10 +74,12 @@
     padding-top: 24px;
     font-size: 11px;
     width: 292px;
+    line-height: 16px;
   }
 }
 
 .techs__container {
+  margin: 0;
   padding: 100px 0 100px;
   list-style-type: none;
   display: flex;

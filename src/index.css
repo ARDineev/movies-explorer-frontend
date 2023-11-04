@@ -10,7 +10,7 @@
 @import url(./components/Techs/Techs.css);
 @import url(./components/AboutMe/AboutMe.css);
 @import url(./components/Portfolio/Portfolio.css);
-@import url(./components/Movies/Movies.css);
+
 @import url(./components/SearchForm/SearchForm.css);
 @import url(./components/FilterCheckbox/FilterCheckbox.css);
 @import url(./components/MoviesCardList/MoviesCardList.css);
@@ -22,17 +22,3 @@
 @import url(./components/Auth/Auth.css);
 @import url(./components/NotFound/NotFound.css);
 @import url(./components/Navigation/Navigation.css);
-
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}

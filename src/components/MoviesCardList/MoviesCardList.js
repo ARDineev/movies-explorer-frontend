@@ -21,10 +21,10 @@ function MoviesCardList() {
         <MoviesCard imgLink={movie_3} movieName="В погоне за Бенкси" duration="1ч 17м" />
         <MoviesCard imgLink={movie_4} movieName="Баския: Взрыв реальности" duration="1ч 17м" />
         <MoviesCard imgLink={movie_5} movieName="Бег это свобода" duration="1ч 17м" />
-        <MoviesCard imgLink={movie_6} movieName="Книготорговцы" duration="1ч 17м" />
+         <MoviesCard imgLink={movie_6} movieName="Книготорговцы" duration="1ч 17м" />
         <MoviesCard imgLink={movie_7} movieName="Когда я думаю о Германии ночью" duration="1ч 17м" />
         <MoviesCard imgLink={movie_8} movieName="Gimme Danger: История Игги и The Stooges" duration="1ч 17м" />
-        <MoviesCard imgLink={movie_9} movieName="Дженис: Маленькая девочка грустит" duration="1ч 17м" />
+         <MoviesCard imgLink={movie_9} movieName="Дженис: Маленькая девочка грустит" duration="1ч 17м" />
         <MoviesCard imgLink={movie_10} movieName="Соберись перед прыжком" duration="1ч 17м" />
         <MoviesCard imgLink={movie_11} movieName="Пи Джей Харви: A dog called money" duration="1ч 17м" />
         <MoviesCard imgLink={movie_12} movieName="По волнам: Искусство звука в кино" duration="1ч 17м" />

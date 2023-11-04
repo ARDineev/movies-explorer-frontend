@@ -7,13 +7,13 @@
 
 @media screen and (max-width: 800px) {
   .profile {
-    margin-top: 236px;
+    margin-top: 230px;
   }
 }
 
 @media screen and (max-width: 500px) {
   .profile {
-    margin-top: 70px;
+    margin-top: 65px;
   }
 }
 
@@ -59,18 +59,18 @@
 
 .profile__info-container:nth-child(2) {
   border-top: 1px solid #424242;
-  padding-bottom: 204px;
+  padding-bottom: 224px;
 }
 
 @media screen and (max-width: 800px) {
   .profile__info-container:nth-child(2) {
-    padding-bottom: 194px;
+    padding-bottom: 208px;
   }
 }
 
 @media screen and (max-width: 500px) {
   .profile__info-container:nth-child(2) {
-    padding-bottom: 365px;
+    padding-bottom: 380px;
   }
 }
 
@@ -100,6 +100,12 @@
   cursor: pointer;
 }
 
+@media screen and (max-width: 500px) {
+  .profile__edit-btn {
+    font-size: 12px;
+  }
+}
+
 .profile__log-out-btn {
   all: unset;
   color: #EE3465;
@@ -110,6 +116,12 @@
   line-height: normal;
   cursor: pointer;
   padding-top: 16px;
+}
+
+@media screen and (max-width: 500px) {
+  .profile__log-out-btn {
+    font-size: 12px;
+  }
 }
 
 .profile__save-btn {

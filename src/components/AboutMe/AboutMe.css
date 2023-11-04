@@ -41,7 +41,7 @@
   .about-me__container {
     padding-top: 60px;
     flex-direction: column-reverse;
-    gap: 40px;
+    gap: 43px;
   }
 }
 
@@ -79,7 +79,7 @@
 
 @media screen and (max-width: 800px) {
   .about-me__profession {
-    padding-top: 16px;
+    padding-top: 14px;
     font-size: 12px;
   }
 }
@@ -109,7 +109,7 @@
   }
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 500px) {
   .about-me__description {
     padding: 20px 0 40px;
     font-size: 11px;
