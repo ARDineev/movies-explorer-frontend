@@ -4,6 +4,7 @@
   display: flex;
   gap: 10px;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 @media screen and (max-width: 1200px) {
@@ -35,10 +36,19 @@
   font-style: normal;
   font-weight: 400;
   line-height: 18px;
-  color: #8B8B8B;
+  color: white;
   padding-left: 20px;
   box-sizing: border-box;
 }
+
+.search-form__input:focus {
+  outline: 2px solid #3456F3;
+}
+
+.search-form__input::placeholder {
+  color: #8B8B8B;
+}
+
 
 @media screen and (max-width: 500px) {
   .search-form__input {
@@ -54,4 +64,9 @@
   border-radius: 10px;
   flex-shrink: 0;
   cursor: pointer;
+  transition: 0.5s;
+}
+
+.search-form__btn:hover {
+  opacity: 0.7;
 }

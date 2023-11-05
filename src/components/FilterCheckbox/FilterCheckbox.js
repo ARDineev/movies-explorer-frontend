@@ -9,10 +9,10 @@ function FilterCheckbox() {
 
   return (
     <div className="filter-checkbox">
-      <div className={`filter-checkbox__ellipse ${isClicked ? "filter-checkbox__ellipse_clicked" : ""}`} onClick={handleFilterClick}>
-        <div className={`filter-checkbox__circle ${isClicked ? "filter-checkbox__circle_clicked" : ""}`}></div>
-      </div>
-      <p className="filter-checkbox__caption">Короткометражки</p>
+      <button className={`filter-checkbox__ellipse ${isClicked ? "filter-checkbox__ellipse_clicked" : ""}`} onClick={handleFilterClick} type="button" id="short-film">
+        <span className={`filter-checkbox__circle ${isClicked ? "filter-checkbox__circle_clicked" : ""}`}></span>
+      </button>
+      <label className="filter-checkbox__caption" for="short-film">Короткометражки</label>
     </div>
   )
 }

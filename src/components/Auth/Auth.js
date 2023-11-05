@@ -9,36 +9,42 @@ function Auth({ title, name, btnCaption, text, linkName, link, showNameInput }) 
   return (
     <section className="auth">
       <div className="auth__logo" onClick={handleLogoClick}></div>
-      <h2 className="auth__title">{title}</h2>
+      <h1 className="auth__title">{title}</h1>
       <form className="auth__form" name={name}>
         <div className="auth__input-container">
           {showNameInput && (
             <>
-              <p className="auth__input-caption">Имя</p>
+              <label className="auth__input-caption" for="auth-name">Имя</label>
               <input
                 className="auth__input"
+                id="auth-name"
                 type="text"
                 name="name"
+                placeholder="Ваше имя"
                 required
                 minLength="2"
                 maxLength="40"
               />
             </>
           )}
-          <p className="auth__input-caption">E-mail</p>
+          <label className="auth__input-caption" for="auth-email">E-mail</label>
           <input
             className="auth__input"
+            id="auth-email"
             type="email"
             name="email"
+            placeholder="Ваш email"
             required
             minLength="2"
             maxLength="40"
           />
-          <p className="auth__input-caption">Пароль</p>
+          <label className="auth__input-caption" for="auth-password">Пароль</label>
           <input
             className="auth__input"
+            id="auth-password"
             type="password"
             name="password"
+            placeholder="Ваш пароль"
             required
             minLength="2"
             maxLength="40"

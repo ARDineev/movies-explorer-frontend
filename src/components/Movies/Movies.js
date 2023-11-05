@@ -8,8 +8,10 @@ function Movies({ loggedIn }) {
   return (
     <>
       <Header loggedIn={loggedIn} />
-      <SearchForm />
-      <MoviesCardList />
+      <main className="main">
+        <SearchForm />
+        <MoviesCardList />
+      </main>
       <Footer />
     </>
   )

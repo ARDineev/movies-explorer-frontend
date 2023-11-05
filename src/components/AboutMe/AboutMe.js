@@ -13,7 +13,7 @@ function AboutMe() {
             С 2015 года работал в компании «СКБ Контур». После того, как прошёл курс
             по веб-разработке, начал заниматься фриланс-заказами и ушёл с постоянной работы.
           </p>
-          <a href="https://github.com/ARDineev/" className="about-me__link">Github</a>
+          <a href="https://github.com/ARDineev/" className="about-me__link" target="_blank" rel="noreferrer">Github</a>
         </div>
         <div className="about-me__photo"></div>
       </div>

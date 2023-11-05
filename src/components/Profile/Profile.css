@@ -89,6 +89,17 @@
   font-weight: 400;
   line-height: normal;
   text-align: right;
+  height: 14px;
+  box-sizing: border-box;
+}
+
+.profile__info-input:focus {
+  outline: none;
+  border-bottom: 1px solid #3456F3;
+}
+
+.profile__info-input::placeholder {
+  color: #8B8B8B;
 }
 
 .profile__edit-btn {
@@ -98,6 +109,11 @@
   font-weight: 400;
   line-height: normal;
   cursor: pointer;
+  transition: 0.5s;
+}
+
+.profile__edit-btn:hover {
+  opacity: 0.7;
 }
 
 @media screen and (max-width: 500px) {
@@ -116,6 +132,11 @@
   line-height: normal;
   cursor: pointer;
   padding-top: 16px;
+  transition: 0.5s;
+}
+
+.profile__log-out-btn:hover {
+  opacity: 0.7;
 }
 
 @media screen and (max-width: 500px) {
@@ -134,5 +155,16 @@
   border-radius: 3px;
   text-align: center;
   cursor: pointer;
+  transition: 0.5s;
 }
 
+.profile__save-btn:hover {
+  opacity: 0.7;
+}
+
+@media screen and (max-width: 500px) {
+  .profile__save-btn {
+    width: 260px;
+    height: 45px;
+  }
+}

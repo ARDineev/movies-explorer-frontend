@@ -3,22 +3,23 @@
   align-items: center;
   justify-content: center;
   gap: 12px;
-  margin: 28px 0 39px;
+  margin: 18px auto 39px;
 }
 
 @media screen and (max-width: 800px) {
   .filter-checkbox {
-    margin: 41px 0 39px;
+    margin: 31px auto 39px;
   }
 }
 
 @media screen and (max-width: 500px) {
   .filter-checkbox {
-    margin: 47px 0 39px;
+    margin: 37px auto 39px;
   }
 }
 
 .filter-checkbox__ellipse {
+  all: unset;
   width: 36px;
   height: 16px;
   flex-shrink: 0;
@@ -63,7 +64,7 @@
   line-height: 18px;
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 500px) {
   .filter-checkbox__caption {
     font-size: 11px;
   }

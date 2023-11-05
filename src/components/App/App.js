@@ -6,14 +6,15 @@ import SavedMovies from '../SavedMovies/SavedMovies';
 import Login from '../Login/Login';
 import Register from '../Register/Register';
 import NotFound from '../NotFound/NotFound';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 
 function App() {
-
+  const navigate = useNavigate();
   const [loggedIn, setLoggedIn] = React.useState(true);
 
   function handleLogOut() {
     setLoggedIn(false);
+    navigate('/', { replace: true });
   }
 
   return (

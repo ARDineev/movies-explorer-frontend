@@ -91,6 +91,14 @@
   box-sizing: border-box;
 }
 
+.auth__input:focus {
+  outline: 1px solid #3456F3;
+}
+
+.auth__input::placeholder {
+  color: #8B8B8B;
+}
+
 @media screen and (max-width: 500px) {
   .auth__input {
     width: 260px;

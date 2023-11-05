@@ -12,8 +12,8 @@ function SearchForm() {
           placeholder="Фильм"
         />
         <button className="search-form__btn" type="submit"></button>
+        <FilterCheckbox />
       </form>
-      <FilterCheckbox />
     </section>
 
   )

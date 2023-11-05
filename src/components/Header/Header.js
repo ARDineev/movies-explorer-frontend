@@ -50,10 +50,10 @@ function Header({ loggedIn }) {
       </>)}
 
       {!loggedIn && (
-        <div className="header__auth-container">
+        <nav className="header__auth-container">
           <Link className="header__signup" to="/signup">Регистрация</Link>
           <button className="header__signin" type="button" onClick={handleSignInClick}>Войти</button>
-        </div>
+        </nav>
       )}
 
       {windowWidth <= 800 && (

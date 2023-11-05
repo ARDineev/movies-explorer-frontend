@@ -24,7 +24,7 @@
 }
 
 .movies-card__image {
-  max-width: 100%;
+  width: 100%;
   aspect-ratio: 360/201;
   object-fit: cover;
   border-radius: 6px;
