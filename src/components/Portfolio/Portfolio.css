@@ -1,0 +1,120 @@
+.portfolio {
+  margin: 100px 0 100px;
+  display: flex;
+  flex-direction: column;
+  width: 1140px;
+}
+
+@media screen and (max-width: 1200px) {
+  .portfolio {
+    margin: 90px 0 90px;
+    width: calc(100vw - 100px);
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .portfolio {
+    margin: 90px 0 60px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .portfolio {
+    margin: 70px 0 55px;
+    width: calc(100vw - 30px);
+  }
+}
+
+.portfolio__title {
+  margin: 0;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  color: #8B8B8B;
+  padding-bottom: 36px;
+}
+
+@media screen and (max-width: 500px) {
+  .portfolio__title {
+    font-size: 14px;
+    padding-bottom: 40px;
+    padding-bottom: 24px;
+  }
+}
+
+.portfolio__links {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.portfolio__link-container {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #424242;
+  padding: 12px 0 8px;
+}
+
+@media screen and (max-width: 800px) {
+  .portfolio__link-container {
+    border-bottom: 1px solid #E6E6E6;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .portfolio__link-container {
+    padding: 18px 0 0;
+  }
+}
+
+.portfolio__link-container:last-child {
+  border-bottom: 0;
+}
+
+.portfolio__link {
+  all: unset;
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 60px;
+  letter-spacing: -1.2px;
+  cursor: pointer;
+  transition: 0.5s;
+}
+
+.portfolio__link:hover {
+  opacity: 0.7;
+}
+
+@media screen and (max-width: 800px) {
+  .portfolio__link {
+    font-size: 28px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .portfolio__link {
+    font-size: 18px;
+    line-height: 28px;
+  }
+}
+
+.portfolio__link_type_caption {
+  line-height: 50px;
+  padding-bottom: 19px;
+}
+
+@media screen and (max-width: 800px) {
+  .portfolio__link_type_caption {
+    font-size: 28px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .portfolio__link_type_caption {
+    font-size: 18px;
+    line-height: 28px;
+    letter-spacing: -0.72px;
+  }
+}

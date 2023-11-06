@@ -1,0 +1,119 @@
+.movies-card {
+  list-style-type: none;
+  width: 100%;
+  position: relative;
+  cursor: pointer;
+}
+
+.movies-card__caption {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 14px 0;
+}
+
+@media screen and (max-width: 800px) {
+  .movies-card__caption {
+    padding: 23px 0 0;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .movies-card__caption {
+    padding: 16px 0 0;
+  }
+}
+
+.movies-card__image {
+  width: 100%;
+  aspect-ratio: 360/201;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.movies-card__title {
+  margin: 0;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+}
+
+@media screen and (max-width: 500px) {
+  .movies-card__title {
+    font-size: 12px;
+  }
+}
+
+.movies-card__duration {
+  margin: 0;
+  color: #8B8B8B;
+  text-align: center;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 10px;
+  width: 52px;
+  height: 18px;
+  flex-shrink: 0;
+  background-color: #2F2F2F;
+  padding-top: 4px;
+  box-sizing: border-box;
+}
+
+.movies-card__save-btn {
+  all: unset;
+  width: 72px;
+  height: 21px;
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  cursor: pointer;
+  transition: 0.5s;
+  background-color: #313131;
+  border-radius: 30px;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 9px;
+  text-align: center;
+}
+
+.movies-card__save-btn:hover {
+  opacity: 0.7;
+}
+
+.movies-card__save-btn_unvisible {
+  opacity: 0;
+}
+
+.movies-card__save-btn_selected {
+  width: 21px;
+  height: 21px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: url(../../images/save-logo.svg);
+  opacity: 1;
+}
+
+.movies-card__delete-btn {
+  all: unset;
+  width: 21px;
+  height: 21px;
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  cursor: pointer;
+  transition: 0.5s;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: url(../../images/delete-logo.svg);
+}
+
+.movies-card__delete-btn:hover {
+  opacity: 0.7;
+}
+
+.movies-card__delete-btn_unvisible {
+  opacity: 0;
+}

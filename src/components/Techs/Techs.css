@@ -1,0 +1,131 @@
+.techs {
+  padding-top: 100px;
+  width: 1280px;
+  background-color: #272727;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media screen and (max-width: 1300px) {
+  .techs {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .techs {
+    padding-top: 90px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .techs {
+    background-color: #202020;
+    padding-top: 70px;
+  }
+}
+
+.techs__title {
+  margin: 0;
+  padding-top: 90px;
+  font-size: 50px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 58px;
+  letter-spacing: -2px;
+}
+
+@media screen and (max-width: 800px) {
+  .techs__title {
+    padding-top: 80px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .techs__title {
+    font-size: 30px;
+    padding-top: 60px;
+    line-height: normal;
+  }
+}
+
+.techs__annotation {
+  margin: 0;
+  padding-top: 26px;
+  width: 460px;
+  text-align: center;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: -0.56px;
+}
+
+@media screen and (max-width: 800px) {
+  .techs__annotation {
+    padding-top: 22px;
+    font-size: 12px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .techs__annotation {
+    padding-top: 24px;
+    font-size: 11px;
+    width: 292px;
+    line-height: 16px;
+  }
+}
+
+.techs__container {
+  margin: 0;
+  padding: 100px 0 100px;
+  list-style-type: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+@media screen and (max-width: 800px) {
+  .techs__container {
+    padding: 83px 0 90px;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .techs__container {
+    flex-wrap: wrap;
+    justify-content: start;
+    width: 273px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .techs__container {
+    width: 179px;
+    padding: 50px 0 70px;
+  }
+}
+
+.techs__item {
+  min-width: 90px;
+  height: 60px;
+  border-radius: 10px;
+  background-color: #303030;
+  text-align: center;
+  padding-top: 21px;
+  box-sizing: border-box;
+  font-size: 14px;
+  line-height: normal;
+  letter-spacing: -0.56px;
+}
+
+@media screen and (max-width: 800px) {
+  .techs__item {
+    min-width: 84px;
+    height: 57px;
+    font-size: 12px;
+  }
+}
