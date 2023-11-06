@@ -14,7 +14,12 @@ function MoviesCard(props) {
   }
 
   function handleSelectMovie() {
+    props.onMovieSave(props.movie);
     setIsSelected(!isSelected);
+  }
+
+  function handleDelMovie() {
+    props.onMovieDel(props.movie);
   }
 
   return (
@@ -41,7 +46,8 @@ function MoviesCard(props) {
           className={
             `movies-card__delete-btn
             ${isMouseOn ? "" : "movies-card__delete-btn_unvisible"}
-          `} />
+          `}
+          onClick={handleDelMovie} />
       )}
     </li>
   )

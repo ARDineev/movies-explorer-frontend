@@ -1,6 +1,8 @@
 import { Link, useNavigate } from 'react-router-dom';
 
-function Auth({ title, name, btnCaption, text, linkName, link, showNameInput }) {
+function Auth({
+  title, name, btnCaption, text, linkName, link, showNameInput, onSubmit, onChange
+}) {
   const navigate = useNavigate();
 
   const handleLogoClick = () => {
@@ -10,7 +12,7 @@ function Auth({ title, name, btnCaption, text, linkName, link, showNameInput }) 
     <section className="auth">
       <div className="auth__logo" onClick={handleLogoClick}></div>
       <h1 className="auth__title">{title}</h1>
-      <form className="auth__form" name={name}>
+      <form className="auth__form" name={name} onSubmit={onSubmit}>
         <div className="auth__input-container">
           {showNameInput && (
             <>
@@ -24,6 +26,7 @@ function Auth({ title, name, btnCaption, text, linkName, link, showNameInput }) 
                 required
                 minLength="2"
                 maxLength="40"
+                onChange={onChange}
               />
             </>
           )}
@@ -37,6 +40,7 @@ function Auth({ title, name, btnCaption, text, linkName, link, showNameInput }) 
             required
             minLength="2"
             maxLength="40"
+            onChange={onChange}
           />
           <label className="auth__input-caption" for="auth-password">Пароль</label>
           <input
@@ -48,6 +52,7 @@ function Auth({ title, name, btnCaption, text, linkName, link, showNameInput }) 
             required
             minLength="2"
             maxLength="40"
+            onChange={onChange}
           />
         </div>
         <button className="auth__btn" type="submit">{btnCaption}</button>
