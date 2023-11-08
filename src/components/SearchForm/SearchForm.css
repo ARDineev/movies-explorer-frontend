@@ -67,6 +67,11 @@
   transition: 0.5s;
 }
 
+.search-form__btn:disabled {
+  cursor: default;
+  opacity: 0.7;
+}
+
 .search-form__btn:hover {
   opacity: 0.7;
 }

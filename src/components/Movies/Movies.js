@@ -4,12 +4,12 @@ import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 
 
-function Movies({ loggedIn, moviesArr, onMovieSave }) {
+function Movies({ loggedIn, moviesArr, onMovieSave, search }) {
   return (
     <>
       <Header loggedIn={loggedIn} />
       <main className="main">
-        <SearchForm />
+        <SearchForm search={search}/>
         <MoviesCardList moviesArr={moviesArr} onMovieSave={onMovieSave}/>
       </main>
       <Footer />

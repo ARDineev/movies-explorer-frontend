@@ -17,8 +17,11 @@ function App() {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = React.useState({ name: '', email: '' });
   const [loggedIn, setLoggedIn] = React.useState(undefined);
+  const [allMoviesArr, setAllMoviesArr] = React.useState([]);
   const [moviesArr, setMoviesArr] = React.useState([]);
   const [savedMoviesArr, setSavedMoviesArr] = React.useState([]);
+
+
 
   React.useEffect(() => { // при загрузке приложения проверям токен в хранилище
     tokenCheck();
@@ -35,7 +38,7 @@ function App() {
   async function getInitialMovies() {
     try {
       const movies = await getMovies();
-      setMoviesArr(movies);
+      setAllMoviesArr(movies);
     } catch (err) {
       console.log(err);
     }
@@ -120,6 +123,20 @@ function App() {
     }
   }
 
+  function searchMovies(keyWord) {
+    // allMoviesArr - это вообще все фильмы, что есть
+    // keyword - это ключевое слово из поисковой строки
+    // его отслеживаем через управляемый инпут
+
+    const movies = [];
+    allMoviesArr.forEach((movie) => {
+      if (movie.nameRU.toLowerCase().includes(keyWord.toLowerCase())) {
+        movies.push(movie);
+      }
+    });
+    setMoviesArr(movies); // обновляем массив с фильмами, которые непосредственно рендерим
+  }
+
   if (loggedIn === undefined) {
     return 'Загрузка...';
   }
@@ -130,7 +147,7 @@ function App() {
         <Routes>
           <Route exact path="/" element={<Main loggedIn={loggedIn} />} />
           <Route exact path="/movies" element={
-            <ProtectedRouteElement element={Movies} isAllowed={loggedIn} redirectPath="/" loggedIn={loggedIn} moviesArr={moviesArr} onMovieSave={handleMovieSave}/>
+            <ProtectedRouteElement element={Movies} isAllowed={loggedIn} redirectPath="/" loggedIn={loggedIn} moviesArr={moviesArr} onMovieSave={handleMovieSave} search={searchMovies}/>
           } />
           <Route exact path="/saved-movies" element={
             <ProtectedRouteElement element={SavedMovies} isAllowed={loggedIn} redirectPath="/" loggedIn={loggedIn} moviesArr={savedMoviesArr} onMovieDel={handleMovieDelete}/>
