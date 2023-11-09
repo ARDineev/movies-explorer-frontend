@@ -1,10 +1,13 @@
 import React from 'react';
 
-function FilterCheckbox() {
-  const [isClicked, setIsClicked] = React.useState(false);
+function FilterCheckbox(props) {
+  const [isClicked, setIsClicked] = React.useState(!JSON.parse(localStorage.getItem('filter')));
 
-  function handleFilterClick() {
+  function handleFilterClick(e) {
     setIsClicked(!isClicked);
+    isClicked ? localStorage.setItem('filter', true) : localStorage.setItem('filter', false);
+    localStorage.getItem('allMovies') && props.startSearch(e);
+ //   console.log('filter', localStorage.getItem('filter'));
   }
 
   return (

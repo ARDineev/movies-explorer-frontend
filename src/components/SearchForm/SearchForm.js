@@ -1,5 +1,6 @@
 import React from 'react';
 import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
+import { getMovies } from '../../utils/MoviesApi';
 
 const useValidation = (value, validations) => {
   const [isEmpty, setEmpty] = React.useState(true);
@@ -65,12 +66,27 @@ const useInput = (initialValue, validations) => {
 }
 
 function SearchForm({ search }) {
-  const keyWord = useInput('', { isEmpty: true, });
+  const keyWord = useInput(localStorage.getItem('keyWord'), { isEmpty: true, });
 
-  function handleSubmit(e) {
+  async function getInitialMovies() {
+    try {
+      const movies = await getMovies();
+      localStorage.setItem('allMovies', JSON.stringify(movies));
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async function handleSubmit(e) {
     e.preventDefault();
-    console.log(keyWord.value);
-    search(keyWord.value);
+    if (!localStorage.getItem('allMovies')) {
+      await getInitialMovies();
+    }
+    localStorage.setItem('keyWord', keyWord.value);
+    const moviesAll = JSON.parse(localStorage.getItem('allMovies'));
+    const filter = JSON.parse(localStorage.getItem('filter'));
+    const searchedMovies = search(moviesAll, keyWord.value, filter);
+    localStorage.setItem('searchedMovies', JSON.stringify(searchedMovies));
   }
 
   return (
@@ -89,7 +105,7 @@ function SearchForm({ search }) {
           onBlur={e => keyWord.onBlur(e)}
         />
         <button disabled={!keyWord.inputValid} className="search-form__btn" type="submit"></button>
-        <FilterCheckbox />
+        <FilterCheckbox startSearch={handleSubmit}/>
       </form>
     </section>
 

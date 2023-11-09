@@ -17,8 +17,7 @@ function App() {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = React.useState({ name: '', email: '' });
   const [loggedIn, setLoggedIn] = React.useState(undefined);
-  const [allMoviesArr, setAllMoviesArr] = React.useState([]);
-  const [moviesArr, setMoviesArr] = React.useState([]);
+  const [moviesArr, setMoviesArr] = React.useState(JSON.parse(localStorage.getItem('searchedMovies')) || []);
   const [savedMoviesArr, setSavedMoviesArr] = React.useState([]);
 
 
@@ -27,22 +26,11 @@ function App() {
     tokenCheck();
   }, []);
 
-  React.useEffect(() => {
-    getInitialMovies();
-  }, []);
 
   React.useEffect(() => {
     getInitialSavedMovies();
   }, []);
 
-  async function getInitialMovies() {
-    try {
-      const movies = await getMovies();
-      setAllMoviesArr(movies);
-    } catch (err) {
-      console.log(err);
-    }
-  }
 
   async function getInitialSavedMovies() {
     try {
@@ -67,6 +55,11 @@ function App() {
   function handleLogOut() {
     setLoggedIn(false);
     localStorage.removeItem('token');
+    localStorage.removeItem('allMovies');
+    localStorage.removeItem('filter');
+    localStorage.removeItem('searchedMovies');
+    localStorage.removeItem('keyWord');
+    setMoviesArr([]);
     navigate('/', { replace: true });
   };
 
@@ -107,7 +100,7 @@ function App() {
         nameEN: currentMovie.nameEN,
       });
       setSavedMoviesArr([movie, ...savedMoviesArr]);
-    } catch(err) {
+    } catch (err) {
       console.log(err);
     }
   }
@@ -118,23 +111,31 @@ function App() {
       setSavedMoviesArr((oldMovieList) => {
         return oldMovieList.filter(movie => movie._id !== currentMovie._id);
       });
-    } catch(err) {
+    } catch (err) {
       console.log(err);
     }
   }
 
-  function searchMovies(keyWord) {
+  function searchMovies(moviesArr, keyWord, filter) {
     // allMoviesArr - это вообще все фильмы, что есть
     // keyword - это ключевое слово из поисковой строки
     // его отслеживаем через управляемый инпут
 
     const movies = [];
-    allMoviesArr.forEach((movie) => {
+  //  const moviesAll = JSON.parse(localStorage.getItem('allMovies'));
+   // const filter = JSON.parse(localStorage.getItem('filter'));
+    moviesArr.forEach((movie) => {
       if (movie.nameRU.toLowerCase().includes(keyWord.toLowerCase())) {
-        movies.push(movie);
+        if (filter && (movie.duration < 40)) {
+          movies.push(movie);
+        }
+        if (!filter) {
+          movies.push(movie);
+        }
       }
     });
     setMoviesArr(movies); // обновляем массив с фильмами, которые непосредственно рендерим
+    return movies;
   }
 
   if (loggedIn === undefined) {
@@ -147,14 +148,22 @@ function App() {
         <Routes>
           <Route exact path="/" element={<Main loggedIn={loggedIn} />} />
           <Route exact path="/movies" element={
-            <ProtectedRouteElement element={Movies} isAllowed={loggedIn} redirectPath="/" loggedIn={loggedIn} moviesArr={moviesArr} onMovieSave={handleMovieSave} search={searchMovies}/>
+            <ProtectedRouteElement
+              element={Movies}
+              isAllowed={loggedIn}
+              redirectPath="/"
+              loggedIn={loggedIn}
+              moviesArr={moviesArr}
+              onMovieSave={handleMovieSave}
+              search={searchMovies}
+            />
           } />
           <Route exact path="/saved-movies" element={
-            <ProtectedRouteElement element={SavedMovies} isAllowed={loggedIn} redirectPath="/" loggedIn={loggedIn} moviesArr={savedMoviesArr} onMovieDel={handleMovieDelete}/>
+            <ProtectedRouteElement element={SavedMovies} isAllowed={loggedIn} redirectPath="/" loggedIn={loggedIn} moviesArr={savedMoviesArr} onMovieDel={handleMovieDelete} />
           } />
           <Route exact path="/profile" element={
-            <ProtectedRouteElement element={Profile} isAllowed={loggedIn} redirectPath="/" handleLogOut={handleLogOut} loggedIn={loggedIn} setCurrentUser={setCurrentUser}/>
-          }/>
+            <ProtectedRouteElement element={Profile} isAllowed={loggedIn} redirectPath="/" handleLogOut={handleLogOut} loggedIn={loggedIn} setCurrentUser={setCurrentUser} />
+          } />
           <Route exact path="/signin" element={<Login handleLogin={handleLogin} />} />
           <Route exact path="/signup" element={<Register />} />
           <Route path="*" element={<NotFound />} />
