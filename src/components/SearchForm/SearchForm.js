@@ -65,28 +65,52 @@ const useInput = (initialValue, validations) => {
   }
 }
 
-function SearchForm({ search }) {
-  const keyWord = useInput(localStorage.getItem('keyWord'), { isEmpty: true, });
+function SearchForm({ search, setMoviesArr, allSavedMoviesArr }) {
+  const href = window.location.href;
+  const keyWord = useInput(
+    href.includes('/movies') ? localStorage.getItem('keyWord') : '',
+    { isEmpty: true, });
+  const filterCheckBox = React.useRef(
+    href.includes('/movies') ? JSON.parse(localStorage.getItem('filter')) || false : false
+  );
+
+  console.log(window.location.href, filterCheckBox.current, typeof(filterCheckBox.current));
 
   async function getInitialMovies() {
+    // функция запрашивает все фильмы с сервера beatfilm-movies
+    // фильмы записываются в хранилище
     try {
       const movies = await getMovies();
-      localStorage.setItem('allMovies', JSON.stringify(movies));
+      return movies;
     } catch (err) {
       console.log(err);
+      return;
     }
   }
 
+
   async function handleSubmit(e) {
     e.preventDefault();
-    if (!localStorage.getItem('allMovies')) {
-      await getInitialMovies();
+    if (href.includes('/movies')) { // если мы на вкладке "фильмы"
+      if (!localStorage.getItem('allMovies')) { // если в хранилище нет фильмов, т.е. запрос ни разу не выполнялся
+        const allMovies = await getInitialMovies(); // то запрашиваем фильмы с api beatfilm-movies
+        allMovies && localStorage.setItem('allMovies', JSON.stringify(allMovies));
+      }
+      localStorage.setItem('keyWord', keyWord.value); // запоминаем ключевое слово - кладем в хранилище
+      localStorage.setItem('filter', filterCheckBox.current);
+      console.log('записали в хранилище', filterCheckBox.current);
+
+      const moviesAll = JSON.parse(localStorage.getItem('allMovies')); // достаем данные из хранилища
+  //    const filter = JSON.parse(localStorage.getItem('filter'));
+
+      const searchedMovies = search(moviesAll, keyWord.value, filterCheckBox.current);
+      localStorage.setItem('searchedMovies', JSON.stringify(searchedMovies));
+      setMoviesArr(searchedMovies);
     }
-    localStorage.setItem('keyWord', keyWord.value);
-    const moviesAll = JSON.parse(localStorage.getItem('allMovies'));
-    const filter = JSON.parse(localStorage.getItem('filter'));
-    const searchedMovies = search(moviesAll, keyWord.value, filter);
-    localStorage.setItem('searchedMovies', JSON.stringify(searchedMovies));
+    if (href.includes('/saved-movies')) { // если мы на вкладке "сохраненные фильмы"
+      const searchedSavedMovies = search(allSavedMoviesArr, keyWord.value, filterCheckBox.current);
+      setMoviesArr(searchedSavedMovies);
+    }
   }
 
   return (
@@ -105,7 +129,7 @@ function SearchForm({ search }) {
           onBlur={e => keyWord.onBlur(e)}
         />
         <button disabled={!keyWord.inputValid} className="search-form__btn" type="submit"></button>
-        <FilterCheckbox startSearch={handleSubmit}/>
+        <FilterCheckbox startSearch={handleSubmit} filterCheckBox={filterCheckBox}/>
       </form>
     </section>
 

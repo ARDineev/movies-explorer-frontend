@@ -8,6 +8,8 @@ function MoviesCardList({ moviesArr, onMovieSave, onMovieDel }) {
   Ширина 768px — 4 ряда карточек. Кнопка «Ещё» загружает дополнительный ряд карточек.
   Ширина от 320px до 480px — 5 карточек по 1 в ряд. Кнопка «Ещё» загружает по 2 карточки. */
 
+  // текущая страница
+  const href = window.location.href;
   // стейт-переменная с текущей шириной экрана
   const [windowWidth, setWindowWidth] = React.useState(window.innerWidth);
   // стейт-переменная с массивом карточек для рендера
@@ -27,10 +29,25 @@ function MoviesCardList({ moviesArr, onMovieSave, onMovieDel }) {
     };
   });
 
+
   React.useEffect(() => {
-    // при изменении исходного массива карточек или при
-    // изменении ширины экрана счетчик обнуляется
-    counter.current = 0;
+    if (href.includes('/movies')) {
+      setInitialMoviesForRender();
+    }
+    if (href.includes('/saved-movies')) {
+      setMoviesForRender(moviesArr)
+    }
+  }, [moviesArr]);
+
+
+  React.useEffect(() => {
+    href.includes('/movies') && setInitialMoviesForRender();
+  }, [windowWidth]);
+
+
+  function setInitialMoviesForRender() {
+    // функция задает стартовые карточки для отрисовки - в зависимости от ширины экрана
+    counter.current = 0; // обнуление счетчика
     let initialNumMov; // сколько карточек отрисовывается первоначально
     if (windowWidth >= 1020) {
       initialNumMov = 6;
@@ -41,7 +58,7 @@ function MoviesCardList({ moviesArr, onMovieSave, onMovieDel }) {
     }
     const movies = moviesArr.slice(0, initialNumMov);
     setMoviesForRender(movies);
-  }, [moviesArr, windowWidth]);
+  }
 
   function handleMoreClick() {
     let addNumMovies; // сколько карточек дорисовываем при клике на кнопку
@@ -72,7 +89,9 @@ function MoviesCardList({ moviesArr, onMovieSave, onMovieDel }) {
         ))}
 
       </ul>
-      {(moviesForRender.length < moviesArr.length) && (<button className="movies-card-list__btn" onClick={handleMoreClick}>Ещё</button>)}
+      {(href.includes('/movies'))
+        && (moviesForRender.length < moviesArr.length)
+        && (<button className="movies-card-list__btn" onClick={handleMoreClick}>Ещё</button>)}
 
     </section>
   )

@@ -17,8 +17,9 @@ function App() {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = React.useState({ name: '', email: '' });
   const [loggedIn, setLoggedIn] = React.useState(undefined);
-  const [moviesArr, setMoviesArr] = React.useState(JSON.parse(localStorage.getItem('searchedMovies')) || []);
-  const [savedMoviesArr, setSavedMoviesArr] = React.useState([]);
+  const [moviesArr, setMoviesArr] = React.useState(JSON.parse(localStorage.getItem('searchedMovies')) || []); // отфильтрованные фильмы
+  const [savedMoviesArr, setSavedMoviesArr] = React.useState([]); // сохраненные фильмы для рендера
+  const [allSavedMoviesArr, setAllSavedMoviesArr] = React.useState([]); // сохраненные фильмы для рендера
 
 
 
@@ -28,14 +29,15 @@ function App() {
 
 
   React.useEffect(() => {
-    getInitialSavedMovies();
-  }, []);
+    loggedIn && getInitialSavedMovies();
+  }, [loggedIn]);
 
 
   async function getInitialSavedMovies() {
     try {
       const savedMovies = await mainApi.getMovies();
       setSavedMoviesArr(savedMovies);
+      setAllSavedMoviesArr(savedMovies);
       console.log(savedMovies);
     } catch (err) {
       console.log(err);
@@ -99,7 +101,9 @@ function App() {
         nameRU: currentMovie.nameRU,
         nameEN: currentMovie.nameEN,
       });
-      setSavedMoviesArr([movie, ...savedMoviesArr]);
+  //    setSavedMoviesArr([movie, ...savedMoviesArr]);
+      setAllSavedMoviesArr([movie, ...allSavedMoviesArr]);
+
     } catch (err) {
       console.log(err);
     }
@@ -109,6 +113,9 @@ function App() {
     try {
       await mainApi.delMovie(currentMovie._id);
       setSavedMoviesArr((oldMovieList) => {
+        return oldMovieList.filter(movie => movie._id !== currentMovie._id);
+      });
+      setAllSavedMoviesArr((oldMovieList) => {
         return oldMovieList.filter(movie => movie._id !== currentMovie._id);
       });
     } catch (err) {
@@ -122,8 +129,8 @@ function App() {
     // его отслеживаем через управляемый инпут
 
     const movies = [];
-  //  const moviesAll = JSON.parse(localStorage.getItem('allMovies'));
-   // const filter = JSON.parse(localStorage.getItem('filter'));
+    //  const moviesAll = JSON.parse(localStorage.getItem('allMovies'));
+    // const filter = JSON.parse(localStorage.getItem('filter'));
     moviesArr.forEach((movie) => {
       if (movie.nameRU.toLowerCase().includes(keyWord.toLowerCase())) {
         if (filter && (movie.duration < 40)) {
@@ -134,7 +141,7 @@ function App() {
         }
       }
     });
-    setMoviesArr(movies); // обновляем массив с фильмами, которые непосредственно рендерим
+  //  setMoviesArr(movies); // обновляем массив с фильмами, которые непосредственно рендерим
     return movies;
   }
 
@@ -156,10 +163,21 @@ function App() {
               moviesArr={moviesArr}
               onMovieSave={handleMovieSave}
               search={searchMovies}
+              setMoviesArr={setMoviesArr}
             />
           } />
           <Route exact path="/saved-movies" element={
-            <ProtectedRouteElement element={SavedMovies} isAllowed={loggedIn} redirectPath="/" loggedIn={loggedIn} moviesArr={savedMoviesArr} onMovieDel={handleMovieDelete} />
+            <ProtectedRouteElement
+              element={SavedMovies}
+              isAllowed={loggedIn}
+              redirectPath="/"
+              loggedIn={loggedIn}
+              moviesArr={savedMoviesArr}
+              onMovieDel={handleMovieDelete}
+              search={searchMovies}
+              setMoviesArr={setSavedMoviesArr}
+              allSavedMoviesArr={allSavedMoviesArr}
+            />
           } />
           <Route exact path="/profile" element={
             <ProtectedRouteElement element={Profile} isAllowed={loggedIn} redirectPath="/" handleLogOut={handleLogOut} loggedIn={loggedIn} setCurrentUser={setCurrentUser} />
