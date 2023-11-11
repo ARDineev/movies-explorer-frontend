@@ -49,6 +49,7 @@
   width: 410px;
   justify-content: space-between;
   padding: 16px 0 16px;
+  position: relative;
 }
 
 @media screen and (max-width: 500px) {
@@ -162,6 +163,16 @@
   opacity: 0.7;
 }
 
+.profile__save-btn:disabled {
+  cursor: default;
+  background-color: #F8F8F8;
+  color: #C2C2C2;
+}
+
+.profile__save-btn:hover:disabled {
+  opacity: 1;
+}
+
 @media screen and (max-width: 500px) {
   .profile__save-btn {
     width: 260px;
@@ -183,4 +194,52 @@
 .profile__error-mesage_visible {
   opacity: 1;
   visibility: visible;
+}
+
+.profile__name-error {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin: 0;
+  color: #FF004C;
+  font-size: 10px;
+  text-align: center;
+  transition: visibility 0.5s, opacity 0.5s;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.profile__name-error_visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.profile__email-error {
+  position: absolute;
+  bottom: 145px;
+  right: 0;
+  margin: 0;
+  color: #FF004C;
+  font-size: 10px;
+  text-align: center;
+  transition: visibility 0.5s, opacity 0.5s;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.profile__email-error_visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+@media screen and (max-width: 800px) {
+  .profile__email-error {
+    bottom: 135px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .profile__email-error {
+    bottom: 305px;
+  }
 }

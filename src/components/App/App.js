@@ -11,6 +11,7 @@ import * as mainApi from '../../utils/MainApi';
 import { getMovies } from '../../utils/MoviesApi';
 import CurrentUserContext from '../../contexts/CurrentUserContext';
 import ProtectedRouteElement from '../ProtectedRoute/ProtectedRoute';
+import Preloader from '../Preloader/Preloader';
 
 
 function App() {
@@ -187,7 +188,7 @@ function App() {
   }
 
   if ((loggedIn === undefined) || (isMainApiErr === undefined)) {
-    return 'Загрузка...';
+    return <Preloader/>; // экран загрузки при получении данных (залогинен ли, ответил ли основной бэкэнд)
   }
 
   return (

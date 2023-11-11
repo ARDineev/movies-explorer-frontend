@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Header from '../Header/Header';
 import CurrentUserContext from '../../contexts/CurrentUserContext';
 import * as mainApi from '../../utils/MainApi';
+import useInput from '../../hooks/useInput';
 
 function Profile({ handleLogOut, loggedIn, setCurrentUser }) {
 
@@ -9,36 +10,25 @@ function Profile({ handleLogOut, loggedIn, setCurrentUser }) {
   const [isEdit, setIsEdit] = React.useState(false);
   const [isCommonPatchErr, setCommonPatchErr] = React.useState(false); // обобщенная ошибка при попытке патч-запроса
   const [isEmailConflict, setEmailConflict] = React.useState(false); // ошибка 409 Conflict при совпадении email у пользователей
+  const name = useInput(currentUser.name, { isEmpty: true, minLength: 2, maxLength: 30, isUserName: 'EnRu' });
+  const email = useInput(currentUser.email, { isEmpty: true, isEmail: true });
+
 
   function handleEditOpen() {
     setIsEdit(true);
   }
-  const [formValue, setFormValue] = useState({
-    name: currentUser.name,
-    email: currentUser.email,
-  })
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-
-    setFormValue({
-      ...formValue,
-      [name]: value
-    });
-  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formValue.name || !formValue.email) {
+    if (!name.value || !email.value) {
       return;
     }
 
     try {
-      const data = await mainApi.patchUserInfo(formValue.email, formValue.name);
+      const data = await mainApi.patchUserInfo(email.value, name.value);
       if (data.email && data.name) {
         setCurrentUser(data)
       }
-      console.log(data);
       setIsEdit(false);
       setCommonPatchErr(false);
       setEmailConflict(false)
@@ -68,12 +58,25 @@ function Profile({ handleLogOut, loggedIn, setCurrentUser }) {
                 placeholder="Ваше имя"
                 readOnly={!isEdit}
                 minLength="2"
-                maxLength="40"
+                maxLength="30"
                 required
+                noValidate
                 name="name"
-                onChange={handleChange}
+                value={name.value}
+                onChange={name.onChange}
+                onBlur={name.onBlur}
               />
+              <p className={
+                `profile__name-error ${isEdit && name.isDirty && name.isEmptyErr && "profile__name-error_visible"}`
+              }>Поле не может быть пустым.</p>
+              <p className={
+                `profile__name-error ${isEdit && name.isDirty && !name.isEmptyErr && name.isMinLengthErr && "profile__name-error_visible"}`
+              }>Минимальное количество символов: {name.validators.minLength}.</p>
+              <p className={
+                `profile__name-error ${isEdit && name.isDirty && !name.isEmptyErr && !name.isMinLengthErr && name.isUserNameErr && "profile__name-error_visible"}`
+              }>Поле содержит недопустимые символы.</p>
             </div>
+
             <div className="profile__info-container">
               <label className="profile__info-text" for="profile-email">E-mail</label>
               <input className="profile__info-input"
@@ -84,9 +87,18 @@ function Profile({ handleLogOut, loggedIn, setCurrentUser }) {
                 minLength="2"
                 maxLength="40"
                 required
+                noValidate
                 name="email"
-                onChange={handleChange}
+                value={email.value}
+                onChange={email.onChange}
+                onBlur={email.onBlur}
               />
+              <p className={
+                `profile__email-error ${isEdit && email.isDirty && email.isEmptyErr && "profile__email-error_visible"}`
+              }>Поле не может быть пустым.</p>
+              <p className={
+                `profile__email-error ${isEdit && email.isDirty && !email.isEmptyErr && email.isEmailErr && "profile__email-error_visible"}`
+              }>Поле не соответствует шаблону email.</p>
             </div>
             <p className={
               `profile__error-mesage ${isEdit && isCommonPatchErr && "profile__error-mesage_visible"}`
@@ -97,7 +109,7 @@ function Profile({ handleLogOut, loggedIn, setCurrentUser }) {
 
             {isEdit || (<button className="profile__edit-btn" type="button" onClick={handleEditOpen}>Редактировать</button>)}
             {isEdit || (<button className="profile__log-out-btn" type="button" onClick={handleLogOut}>Выйти из аккаунта</button>)}
-            {isEdit && (<button className="profile__save-btn" type="submit">Сохранить</button>)}
+            {isEdit && (<button className="profile__save-btn" type="submit" disabled={!(name.inputValid && email.inputValid)}>Сохранить</button>)}
           </form>
         </section>
       </main>
