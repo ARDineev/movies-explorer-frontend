@@ -19,7 +19,9 @@ function App() {
   const [loggedIn, setLoggedIn] = React.useState(undefined);
   const [moviesArr, setMoviesArr] = React.useState(JSON.parse(localStorage.getItem('searchedMovies')) || []); // отфильтрованные фильмы
   const [savedMoviesArr, setSavedMoviesArr] = React.useState([]); // сохраненные фильмы для рендера
-  const [allSavedMoviesArr, setAllSavedMoviesArr] = React.useState([]); // сохраненные фильмы для рендера
+  const [allSavedMoviesArr, setAllSavedMoviesArr] = React.useState([]); // все сохраненные фильмы --------------------------------------------------------
+  const [isMainApiErr, setMainApiErr] = React.useState(undefined); // ошибка при получении данных с основного бэкэнда
+  const [isMoviesApiErr, setMoviesApiErr] = React.useState(undefined); // ошибка при получении данных с сервера beatfilm-movies
 
 
 
@@ -29,7 +31,9 @@ function App() {
 
 
   React.useEffect(() => {
-    loggedIn && getInitialSavedMovies();
+    if (loggedIn) {
+      getInitialSavedMovies();
+    }
   }, [loggedIn]);
 
 
@@ -37,12 +41,28 @@ function App() {
     try {
       const savedMovies = await mainApi.getMovies();
       setSavedMoviesArr(savedMovies);
-      setAllSavedMoviesArr(savedMovies);
-      console.log(savedMovies);
+      setAllSavedMoviesArr(savedMovies); //
+      setMainApiErr(false);
+      return savedMovies;
     } catch (err) {
       console.log(err);
+      setMainApiErr(true);
     }
   }
+
+  async function getInitialMovies() {
+    // функция запрашивает все фильмы с сервера beatfilm-movies
+
+    try {
+      const movies = await getMovies();
+      setMoviesApiErr(false);
+      return movies;
+    } catch (err) {
+      console.log(err);
+      setMoviesApiErr(true);
+    }
+  }
+
 
   async function handleLogin() { // логинимся и поучаем свои данные
     try {
@@ -85,6 +105,17 @@ function App() {
     }
   }
 
+
+  function checkMovieSave(currentMovie) {
+
+    const res = allSavedMoviesArr.some((movie) => {
+      return (movie.movieId === currentMovie.id)
+    })
+
+    return res;
+  }
+
+
   async function handleMovieSave(currentMovie) {
     try {
       const movie = await mainApi.saveMovie({
@@ -101,7 +132,7 @@ function App() {
         nameRU: currentMovie.nameRU,
         nameEN: currentMovie.nameEN,
       });
-  //    setSavedMoviesArr([movie, ...savedMoviesArr]);
+      //    setSavedMoviesArr([movie, ...savedMoviesArr]);
       setAllSavedMoviesArr([movie, ...allSavedMoviesArr]);
 
     } catch (err) {
@@ -110,6 +141,15 @@ function App() {
   }
 
   async function handleMovieDelete(currentMovie) {
+    console.log(currentMovie._id);
+    if (!currentMovie.movieId) { // поле movieId есть только у объектов saved-movies
+      for (let i = 0; i < allSavedMoviesArr.length; i++) {
+        if (allSavedMoviesArr[i].movieId === currentMovie.id) {
+          currentMovie._id = allSavedMoviesArr[i]._id
+          break;
+        }
+      }
+    }
     try {
       await mainApi.delMovie(currentMovie._id);
       setSavedMoviesArr((oldMovieList) => {
@@ -129,10 +169,12 @@ function App() {
     // его отслеживаем через управляемый инпут
 
     const movies = [];
-    //  const moviesAll = JSON.parse(localStorage.getItem('allMovies'));
-    // const filter = JSON.parse(localStorage.getItem('filter'));
+
     moviesArr.forEach((movie) => {
-      if (movie.nameRU.toLowerCase().includes(keyWord.toLowerCase())) {
+      if (
+        movie.nameRU.toLowerCase().includes(keyWord.toLowerCase())
+        || movie.nameEN.toLowerCase().includes(keyWord.toLowerCase())
+      ) {
         if (filter && (movie.duration < 40)) {
           movies.push(movie);
         }
@@ -141,11 +183,10 @@ function App() {
         }
       }
     });
-  //  setMoviesArr(movies); // обновляем массив с фильмами, которые непосредственно рендерим
     return movies;
   }
 
-  if (loggedIn === undefined) {
+  if ((loggedIn === undefined) || (isMainApiErr === undefined)) {
     return 'Загрузка...';
   }
 
@@ -162,8 +203,13 @@ function App() {
               loggedIn={loggedIn}
               moviesArr={moviesArr}
               onMovieSave={handleMovieSave}
-              search={searchMovies}
+              onMovieDel={handleMovieDelete}
+              searchMovies={searchMovies}
               setMoviesArr={setMoviesArr}
+              isApiErr={isMoviesApiErr}
+              getInitialMovies={getInitialMovies}
+              checkMovieSave={checkMovieSave}
+              isMainApiErr={isMainApiErr}
             />
           } />
           <Route exact path="/saved-movies" element={
@@ -174,9 +220,10 @@ function App() {
               loggedIn={loggedIn}
               moviesArr={savedMoviesArr}
               onMovieDel={handleMovieDelete}
-              search={searchMovies}
+              searchMovies={searchMovies}
               setMoviesArr={setSavedMoviesArr}
               allSavedMoviesArr={allSavedMoviesArr}
+              isApiErr={isMainApiErr}
             />
           } />
           <Route exact path="/profile" element={

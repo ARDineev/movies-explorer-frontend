@@ -5,7 +5,7 @@ import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 
 
-function SavedMovies({ loggedIn, moviesArr, onMovieDel, search, setMoviesArr, allSavedMoviesArr }) {
+function SavedMovies({ loggedIn, moviesArr, onMovieDel, searchMovies, setMoviesArr, allSavedMoviesArr, isApiErr }) {
 
    React.useEffect(() => {
     setMoviesArr(allSavedMoviesArr);
@@ -15,8 +15,8 @@ function SavedMovies({ loggedIn, moviesArr, onMovieDel, search, setMoviesArr, al
     <>
       <Header loggedIn={loggedIn} />
       <main className="main">
-        <SearchForm search={search} moviesArr={moviesArr} setMoviesArr={setMoviesArr} allSavedMoviesArr={allSavedMoviesArr}/>
-        <MoviesCardList moviesArr={moviesArr} onMovieDel={onMovieDel}/>
+        <SearchForm searchMovies={searchMovies} moviesArr={moviesArr} setMoviesArr={setMoviesArr} allSavedMoviesArr={allSavedMoviesArr}/>
+        <MoviesCardList moviesArr={moviesArr} onMovieDel={onMovieDel} allSavedMoviesArr={allSavedMoviesArr} isApiErr={isApiErr}/>
       </main>
       <Footer />
     </>

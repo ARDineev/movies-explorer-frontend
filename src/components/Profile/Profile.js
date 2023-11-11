@@ -7,6 +7,8 @@ function Profile({ handleLogOut, loggedIn, setCurrentUser }) {
 
   const currentUser = React.useContext(CurrentUserContext);
   const [isEdit, setIsEdit] = React.useState(false);
+  const [isCommonPatchErr, setCommonPatchErr] = React.useState(false); // обобщенная ошибка при попытке патч-запроса
+  const [isEmailConflict, setEmailConflict] = React.useState(false); // ошибка 409 Conflict при совпадении email у пользователей
 
   function handleEditOpen() {
     setIsEdit(true);
@@ -27,21 +29,27 @@ function Profile({ handleLogOut, loggedIn, setCurrentUser }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formValue.name, formValue.email);
     if (!formValue.name || !formValue.email) {
       return;
     }
 
     try {
       const data = await mainApi.patchUserInfo(formValue.email, formValue.name);
-      console.log(data);
       if (data.email && data.name) {
         setCurrentUser(data)
       }
-    } catch (err) {
-      console.log(err);
-    } finally {
+      console.log(data);
       setIsEdit(false);
+      setCommonPatchErr(false);
+      setEmailConflict(false)
+
+    } catch (err) {
+      if (err.message.startsWith('409')) {
+        setEmailConflict(true)
+      } else {
+        setCommonPatchErr(true);
+      }
+      console.log(err);
     }
   }
 
@@ -80,6 +88,13 @@ function Profile({ handleLogOut, loggedIn, setCurrentUser }) {
                 onChange={handleChange}
               />
             </div>
+            <p className={
+              `profile__error-mesage ${isEdit && isCommonPatchErr && "profile__error-mesage_visible"}`
+            }>При обновлении профиля произошла ошибка.</p>
+            <p className={
+              `profile__error-mesage ${isEdit && isEmailConflict && "profile__error-mesage_visible"}`
+            }>Пользователь с таким email уже существует.</p>
+
             {isEdit || (<button className="profile__edit-btn" type="button" onClick={handleEditOpen}>Редактировать</button>)}
             {isEdit || (<button className="profile__log-out-btn" type="button" onClick={handleLogOut}>Выйти из аккаунта</button>)}
             {isEdit && (<button className="profile__save-btn" type="submit">Сохранить</button>)}

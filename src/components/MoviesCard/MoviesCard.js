@@ -3,7 +3,16 @@ import React from 'react';
 function MoviesCard(props) {
   const href = window.location.href;
   const [isMouseOn, setIsMouseOn] = React.useState(false);
-  const [isSelected, setIsSelected] = React.useState(false);
+  const [isSelected, setIsSelected] = React.useState(href.includes('/movies') ? handleCheckSave() : false);
+
+
+  function handleCheckSave() {
+ //   console.log('проверяю', props.movie.nameRU, ' id = ', props.movie.id);
+    const res = props.checkMovieSave(props.movie);
+ //   console.log(console.log(props.allSavedMoviesArr));
+    return res;
+
+  }
 
   function handleIsMouseOn() {
     setIsMouseOn(true);
@@ -14,7 +23,7 @@ function MoviesCard(props) {
   }
 
   function handleSelectMovie() {
-    props.onMovieSave(props.movie);
+    isSelected ? props.onMovieDel(props.movie) : props.onMovieSave(props.movie);
     setIsSelected(!isSelected);
   }
 
@@ -24,7 +33,7 @@ function MoviesCard(props) {
 
   return (
     <li className="movies-card" onMouseOver={handleIsMouseOn} onMouseOut={handleIsMouseOff}>
-      <img className="movies-card__image" src={props.imgLink} alt={props.movieName}/>
+      <img className="movies-card__image" src={props.imgLink} alt={props.movieName} />
       <div className="movies-card__caption">
         <h2 className="movies-card__title">{props.movieName}</h2>
         <p className="movies-card__duration">{props.duration}</p>

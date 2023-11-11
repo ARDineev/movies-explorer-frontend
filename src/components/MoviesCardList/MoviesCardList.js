@@ -1,8 +1,9 @@
 import React from 'react';
 import MoviesCard from '../MoviesCard/MoviesCard';
+import Preloader from '../Preloader/Preloader';
 
 
-function MoviesCardList({ moviesArr, onMovieSave, onMovieDel }) {
+function MoviesCardList({ moviesArr, onMovieSave, onMovieDel, isApiErr, checkMovieSave }) {
   /* Логика работы согласно ТЗ:
   Ширина 1280px — 4 ряда карточек. Кнопка «Ещё» загружает дополнительный ряд карточек.
   Ширина 768px — 4 ряда карточек. Кнопка «Ещё» загружает дополнительный ряд карточек.
@@ -12,10 +13,19 @@ function MoviesCardList({ moviesArr, onMovieSave, onMovieDel }) {
   const href = window.location.href;
   // стейт-переменная с текущей шириной экрана
   const [windowWidth, setWindowWidth] = React.useState(window.innerWidth);
-  // стейт-переменная с массивом карточек для рендера
-  const [moviesForRender, setMoviesForRender] = React.useState([]);
   // счетчик, участвует в логике дорисовки карточек
   const counter = React.useRef();
+
+  // стейт-переменная с массивом карточек для рендера
+  const [moviesForRender, setMoviesForRender] = React.useState(
+    href.includes('/movies') ? getInitialMoviesForRender() : moviesArr
+  );
+
+  const [isSearchBegin, setSearchBegin] = React.useState( // начинал ли пользователь поиск? Актуально для страницы /movies
+    Boolean(JSON.parse(localStorage.getItem('allMovies')))
+  );
+
+
 
   React.useEffect(() => {
     // вешаем слушатель изменения размера экрана,
@@ -29,10 +39,15 @@ function MoviesCardList({ moviesArr, onMovieSave, onMovieDel }) {
     };
   });
 
+  React.useEffect(() => {
+    setSearchBegin(Boolean(JSON.parse(localStorage.getItem('allMovies'))));
+  }, [Boolean(JSON.parse(localStorage.getItem('allMovies')))]);
+
 
   React.useEffect(() => {
     if (href.includes('/movies')) {
-      setInitialMoviesForRender();
+      const movies = getInitialMoviesForRender();
+      setMoviesForRender(movies);
     }
     if (href.includes('/saved-movies')) {
       setMoviesForRender(moviesArr)
@@ -41,11 +56,14 @@ function MoviesCardList({ moviesArr, onMovieSave, onMovieDel }) {
 
 
   React.useEffect(() => {
-    href.includes('/movies') && setInitialMoviesForRender();
+    if (href.includes('/movies')) {
+      const movies = getInitialMoviesForRender();
+      setMoviesForRender(movies);
+    }
   }, [windowWidth]);
 
 
-  function setInitialMoviesForRender() {
+  function getInitialMoviesForRender() {
     // функция задает стартовые карточки для отрисовки - в зависимости от ширины экрана
     counter.current = 0; // обнуление счетчика
     let initialNumMov; // сколько карточек отрисовывается первоначально
@@ -57,7 +75,7 @@ function MoviesCardList({ moviesArr, onMovieSave, onMovieDel }) {
       initialNumMov = 4;
     }
     const movies = moviesArr.slice(0, initialNumMov);
-    setMoviesForRender(movies);
+    return movies;
   }
 
   function handleMoreClick() {
@@ -74,22 +92,37 @@ function MoviesCardList({ moviesArr, onMovieSave, onMovieDel }) {
 
   return (
     <section className="movies-card-list">
-      <ul className="movies-card-list__container">
+      {((href.includes('/movies') && isSearchBegin)
+        || href.includes('/saved-movies'))
+        && (moviesForRender.length > 0)
+        && (<ul className="movies-card-list__container">
+          {moviesForRender.map((movie) => (
+            <MoviesCard
+              imgLink={movie.image.url ? 'https://api.nomoreparties.co/' + movie.image.url : movie.image}
+              movieName={movie.nameRU}
+              duration={movie.duration}
+              onMovieSave={onMovieSave}
+              onMovieDel={onMovieDel}
+              movie={movie}
+              key={href.includes('/movies') ? movie.id : movie._id} // выбор ключа зависит от того, на какой мы странице
+              checkMovieSave={checkMovieSave}
+            />
+          ))}
+        </ul>)}
+      {href.includes('/movies') && !isSearchBegin && !isApiErr && (
+        <Preloader />
+      )}
 
-        {moviesForRender.map((movie) => (
-          <MoviesCard
-            imgLink={movie.image.url ? 'https://api.nomoreparties.co/' + movie.image.url : movie.image}
-            movieName={movie.nameRU}
-            duration={movie.duration}
-            onMovieSave={onMovieSave}
-            onMovieDel={onMovieDel}
-            movie={movie}
-            key={movie.id}
-          />
-        ))}
+      <p className={`movies-card-list__not-found ${
+        ((href.includes('/movies') && isSearchBegin)
+        || href.includes('/saved-movies'))
+        && !isApiErr
+        && (moviesForRender.length === 0) && "movies-card-list__not-found_visible"}
+        `}>Ничего не найдено</p>
 
-      </ul>
-      {(href.includes('/movies'))
+      {isApiErr && (<div>Сбой!!!!!!</div>)}
+
+      {href.includes('/movies')
         && (moviesForRender.length < moviesArr.length)
         && (<button className="movies-card-list__btn" onClick={handleMoreClick}>Ещё</button>)}
 

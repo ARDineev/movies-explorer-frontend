@@ -4,13 +4,13 @@ import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 
 
-function Movies({ loggedIn, moviesArr, onMovieSave, search, setMoviesArr }) {
+function Movies({ loggedIn, moviesArr, onMovieSave, onMovieDel, searchMovies, setMoviesArr, isApiErr, getInitialMovies, checkMovieSave, isMainApiErr }) {
   return (
     <>
       <Header loggedIn={loggedIn} />
       <main className="main">
-        <SearchForm search={search} setMoviesArr={setMoviesArr}/>
-        <MoviesCardList moviesArr={moviesArr} onMovieSave={onMovieSave}/>
+        <SearchForm searchMovies={searchMovies} setMoviesArr={setMoviesArr} getInitialMovies={getInitialMovies}/>
+        <MoviesCardList moviesArr={moviesArr} onMovieSave={onMovieSave} onMovieDel={onMovieDel} isApiErr={isApiErr} checkMovieSave={checkMovieSave} isMainApiErr={isMainApiErr}/>
       </main>
       <Footer />
     </>
