@@ -39,7 +39,8 @@ function SearchForm({ searchMovies, setMoviesArr, allSavedMoviesArr, getInitialM
   return (
     <section>
       <form className="search-form" onSubmit={handleSubmit}>
-        <p className={`search-form__input-error ${keyWord.isDirty && keyWord.isEmptyErr && "search-form__input-error_visible"}`}>Нужно ввести ключевое слово</p>
+        <p className={`search-form__input-error
+        ${keyWord.isDirty && keyWord.isEmptyErr && "search-form__input-error_visible"}`}>Нужно ввести ключевое слово</p>
         <input
           className="search-form__input"
           type="search"

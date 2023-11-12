@@ -1,7 +1,9 @@
 import React from 'react';
 
 function useValidation(value, validators) {
-
+  // кастомный расширяемый хук валидации. Перечень проверок может быть пополнен при необходимости
+  // какие проверки будет проходить конкретный инпут - определяется при создании управляемого инпута через хук useInput
+  
   const [isEmptyErr, setEmptyErr] = React.useState(false); // ошибка валидации "поле пустое"
   const [isMinLengthErr, setMinLengthErr] = React.useState(false); // ошибка валидации "длина поля менее допустимого значения"
   const [isMaxLengthErr, setMaxLengthErr] = React.useState(false); // ошибка валидации "длина поля более допустимого значения"
@@ -30,7 +32,7 @@ function useValidation(value, validators) {
       }
     }
   }, [value]);
-  
+
   React.useEffect(() => {
     if (isEmptyErr || isMinLengthErr || isMaxLengthErr || isEmailErr || isUserNameErr) {
       setInputValid(false);
