@@ -11,3 +11,7 @@ dark-2
 ## Ссылка на страницу на сервере
 
 https://movie.expl.nomoredomainsmonster.ru
+
+## Ссылка на pull-request
+
+https://github.com/ARDineev/movies-explorer-frontend/pull/2
