@@ -4,12 +4,12 @@ import useInput from '../../hooks/useInput';
 
 
 function SearchForm({ searchMovies, setMoviesArr, allSavedMoviesArr, getInitialMovies }) {
-  const href = window.location.href;
-  const keyWord = useInput(
-    href.includes('/movies') ? localStorage.getItem('keyWord') : '',
-    { isEmpty: true, });
-  const filterCheckBox = React.useRef(
-    href.includes('/movies') ? JSON.parse(localStorage.getItem('filter')) || false : false
+  const href = window.location.href; // текущая страница
+  const keyWord = useInput( // ключевое слово в строке поиска. Для базовой логики и валидации используем кастомный хук
+    href.includes('/movies') ? localStorage.getItem('keyWord') || '' : '', // начальное значение берем из хранилища, если это страница /movies
+    { isEmpty: true, }); // валидируем поле на пустоту
+  const filterCheckBox = React.useRef( // состояние чек-бокса фильтрации по короткометражкам
+    href.includes('/movies') ? JSON.parse(localStorage.getItem('filter')) || false : false // начальное состояние берется из хранилища для /movies
   );
 
   async function handleSubmit(e) {
@@ -20,17 +20,17 @@ function SearchForm({ searchMovies, setMoviesArr, allSavedMoviesArr, getInitialM
         allMovies && localStorage.setItem('allMovies', JSON.stringify(allMovies)); // фильмы записываются в хранилище
       }
       localStorage.setItem('keyWord', keyWord.value); // запоминаем ключевое слово - кладем в хранилище
-      localStorage.setItem('filter', filterCheckBox.current);
+      localStorage.setItem('filter', filterCheckBox.current); // запоминаем состояние чек-бокса
 
       const moviesAll = JSON.parse(localStorage.getItem('allMovies')); // достаем данные из хранилища
 
-      if (moviesAll) {
+      if (moviesAll) { // выполняем поиск по всем фильмам, полученным с api beatfilm-movies
         const searchedMovies = searchMovies(moviesAll, keyWord.value, filterCheckBox.current);
-        localStorage.setItem('searchedMovies', JSON.stringify(searchedMovies));
+        localStorage.setItem('searchedMovies', JSON.stringify(searchedMovies)); // сохраняем результат в хранилище
         setMoviesArr(searchedMovies);
       }
     }
-    if (href.includes('/saved-movies')) { // если мы на вкладке "сохраненные фильмы"
+    if (href.includes('/saved-movies')) { // если мы на вкладке "сохраненные фильмы", кино ищем по всем сохраненным фильмам из пропсов
       const searchedSavedMovies = searchMovies(allSavedMoviesArr, keyWord.value, filterCheckBox.current);
       setMoviesArr(searchedSavedMovies);
     }
@@ -39,7 +39,7 @@ function SearchForm({ searchMovies, setMoviesArr, allSavedMoviesArr, getInitialM
   return (
     <section>
       <form className="search-form" onSubmit={handleSubmit}>
-        {(keyWord.isDirty && keyWord.isEmptyErr) && <div className="search-form__input-error">{'Нужно ввести ключевое слово'}</div>}
+        <p className={`search-form__input-error ${keyWord.isDirty && keyWord.isEmptyErr && "search-form__input-error_visible"}`}>Нужно ввести ключевое слово</p>
         <input
           className="search-form__input"
           type="search"
@@ -51,7 +51,7 @@ function SearchForm({ searchMovies, setMoviesArr, allSavedMoviesArr, getInitialM
           onBlur={keyWord.onBlur}
         />
         <button disabled={!keyWord.inputValid} className="search-form__btn" type="submit"></button>
-        <FilterCheckbox startSearch={handleSubmit} filterCheckBox={filterCheckBox} keyWordEmptyErr={keyWord.isEmptyErr}/>
+        <FilterCheckbox startSearch={handleSubmit} filterCheckBox={filterCheckBox} keyWordEmptyErr={keyWord.isEmptyErr} />
       </form>
     </section>
 

@@ -52,10 +52,18 @@
 
 .search-form__input-error {
   position: absolute;
-  top: -20px;
+  top: -30px;
   left: 5px;
   color: #FF3055;
   font-size: 12px;
+  transition: visibility 0.5s, opacity 0.5s;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.search-form__input-error_visible {
+  opacity: 1;
+  visibility: visible;
 }
 
 @media screen and (max-width: 500px) {

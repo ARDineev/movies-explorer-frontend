@@ -17,43 +17,38 @@ import Preloader from '../Preloader/Preloader';
 function App() {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = React.useState({ name: '', email: '' });
-  const [loggedIn, setLoggedIn] = React.useState(undefined);
-  const [moviesArr, setMoviesArr] = React.useState(JSON.parse(localStorage.getItem('searchedMovies')) || []); // отфильтрованные фильмы
-  const [savedMoviesArr, setSavedMoviesArr] = React.useState([]); // сохраненные фильмы для рендера
-  const [allSavedMoviesArr, setAllSavedMoviesArr] = React.useState([]); // все сохраненные фильмы --------------------------------------------------------
-  const [isMainApiErr, setMainApiErr] = React.useState(undefined); // ошибка при получении данных с основного бэкэнда
+  const [loggedIn, setLoggedIn] = React.useState(undefined); // залогинен ли пользователь. Undefined - чтобы избежать лишних "прыжков" по страницам
+  const [moviesArr, setMoviesArr] = React.useState(JSON.parse(localStorage.getItem('searchedMovies')) || []); // отфильтрованные фильмы /movies
+  const [savedMoviesArr, setSavedMoviesArr] = React.useState([]); // отфильтрованные сохраненные фильмы для рендера /saved-movies
+  const [allSavedMoviesArr, setAllSavedMoviesArr] = React.useState([]); // все сохраненные фильмы
+  const [isMainApiErr, setMainApiErr] = React.useState(undefined); // ошибка при получении данных с основного бэкэнда. После запроса примет значение true или false
   const [isMoviesApiErr, setMoviesApiErr] = React.useState(undefined); // ошибка при получении данных с сервера beatfilm-movies
-
-
 
   React.useEffect(() => { // при загрузке приложения проверям токен в хранилище
     tokenCheck();
   }, []);
 
-
-  React.useEffect(() => {
+  React.useEffect(() => { // после того, как залогинились, подгружаем сохраненные фильмы
     if (loggedIn) {
       getInitialSavedMovies();
     }
   }, [loggedIn]);
 
-
   async function getInitialSavedMovies() {
     try {
       const savedMovies = await mainApi.getMovies();
-      setSavedMoviesArr(savedMovies);
-      setAllSavedMoviesArr(savedMovies); //
-      setMainApiErr(false);
+      setSavedMoviesArr(savedMovies); // изначально фильтр для сохраненных фильмов не выставлен
+      setAllSavedMoviesArr(savedMovies); // поэтому savedMoviesArr и allSavedMoviesArr совпадают
+      setMainApiErr(false); // сервер ответил без ошибки
       return savedMovies;
     } catch (err) {
       console.log(err);
-      setMainApiErr(true);
+      setMainApiErr(true); // ошибка на сервере, данные не получены
     }
   }
 
   async function getInitialMovies() {
     // функция запрашивает все фильмы с сервера beatfilm-movies
-
     try {
       const movies = await getMovies();
       setMoviesApiErr(false);
@@ -64,18 +59,21 @@ function App() {
     }
   }
 
-
   async function handleLogin() { // логинимся и поучаем свои данные
     try {
       const userData = await mainApi.getUserInfo();
       setCurrentUser(userData);
       setLoggedIn(true);
+      return true;
     } catch (err) {
       console.log(err);
+      setLoggedIn(false);
+      return false;
     }
   }
 
   function handleLogOut() {
+    // разлогиниваемся и чистим localStorage
     setLoggedIn(false);
     localStorage.removeItem('token');
     localStorage.removeItem('allMovies');
@@ -88,14 +86,11 @@ function App() {
 
   async function tokenCheck() {
     // проверям токен в хранилище. Если токен валидный - сразу логинимся
-
     const token = localStorage.getItem('token');
-
     if (!token) {
       setLoggedIn(false);
       return;
     };
-
     if (token) {
       try {
         await handleLogin();
@@ -106,18 +101,17 @@ function App() {
     }
   }
 
-
   function checkMovieSave(currentMovie) {
-
+    // функция проверяет, сохранен ли данный фильм на странице /movies
+    // у пользователя на основном бэкэнде
     const res = allSavedMoviesArr.some((movie) => {
       return (movie.movieId === currentMovie.id)
     })
-
     return res;
   }
 
-
   async function handleMovieSave(currentMovie) {
+    // сохранение фильма с /movies на основной бэкэнд
     try {
       const movie = await mainApi.saveMovie({
         country: currentMovie.country,
@@ -133,24 +127,24 @@ function App() {
         nameRU: currentMovie.nameRU,
         nameEN: currentMovie.nameEN,
       });
-      //    setSavedMoviesArr([movie, ...savedMoviesArr]);
-      setAllSavedMoviesArr([movie, ...allSavedMoviesArr]);
-
+      setAllSavedMoviesArr([movie, ...allSavedMoviesArr]); // пополняем массив всех сохраненных фильмов
     } catch (err) {
       console.log(err);
     }
   }
 
   async function handleMovieDelete(currentMovie) {
-    console.log(currentMovie._id);
-    if (!currentMovie.movieId) { // поле movieId есть только у объектов saved-movies
+    // функция удаления фильма с основного бэкэнда
+    if (!currentMovie.movieId) { // поле movieId есть только у объектов фильмов с /saved-movies
+      // соответственно, по данному циклу пройдет фильм только при клике со страницы /movies
       for (let i = 0; i < allSavedMoviesArr.length; i++) {
         if (allSavedMoviesArr[i].movieId === currentMovie.id) {
-          currentMovie._id = allSavedMoviesArr[i]._id
+          currentMovie._id = allSavedMoviesArr[i]._id // объект фильма /movies дополняется необходимым для удаления полем _id
           break;
         }
       }
     }
+    // далее, общий блок. Через него удаляются фильмы при клике с любой страницы
     try {
       await mainApi.delMovie(currentMovie._id);
       setSavedMoviesArr((oldMovieList) => {
@@ -165,12 +159,11 @@ function App() {
   }
 
   function searchMovies(moviesArr, keyWord, filter) {
-    // allMoviesArr - это вообще все фильмы, что есть
+    // функция возвращает отфильтрованный массив фильмов
+    // moviesArr - исходный массив фильмов
     // keyword - это ключевое слово из поисковой строки
-    // его отслеживаем через управляемый инпут
-
+    // filter - положение чек-бокса короткометражек
     const movies = [];
-
     moviesArr.forEach((movie) => {
       if (
         movie.nameRU.toLowerCase().includes(keyWord.toLowerCase())
@@ -187,8 +180,8 @@ function App() {
     return movies;
   }
 
-  if ((loggedIn === undefined) || (isMainApiErr === undefined)) {
-    return <Preloader/>; // экран загрузки при получении данных (залогинен ли, ответил ли основной бэкэнд)
+  if ((loggedIn === undefined) || ((isMainApiErr === undefined) && loggedIn)) {
+    return <div className="app__preloader-container"><Preloader /></div>; // экран загрузки при получении данных (залогинен ли, ответил ли основной бэкэнд)
   }
 
   return (

@@ -5,13 +5,9 @@ function MoviesCard(props) {
   const [isMouseOn, setIsMouseOn] = React.useState(false);
   const [isSelected, setIsSelected] = React.useState(href.includes('/movies') ? handleCheckSave() : false);
 
-
   function handleCheckSave() {
- //   console.log('проверяю', props.movie.nameRU, ' id = ', props.movie.id);
     const res = props.checkMovieSave(props.movie);
- //   console.log(console.log(props.allSavedMoviesArr));
     return res;
-
   }
 
   function handleIsMouseOn() {

@@ -10,7 +10,7 @@ function Profile({ handleLogOut, loggedIn, setCurrentUser }) {
   const [isEdit, setIsEdit] = React.useState(false);
   const [isCommonPatchErr, setCommonPatchErr] = React.useState(false); // обобщенная ошибка при попытке патч-запроса
   const [isEmailConflict, setEmailConflict] = React.useState(false); // ошибка 409 Conflict при совпадении email у пользователей
-  const name = useInput(currentUser.name, { isEmpty: true, minLength: 2, maxLength: 30, isUserName: 'EnRu' });
+  const name = useInput(currentUser.name, { isEmpty: true, minLength: 2, maxLength: 30, isUserName: true });
   const email = useInput(currentUser.email, { isEmpty: true, isEmail: true });
 
 

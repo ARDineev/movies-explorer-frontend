@@ -24,7 +24,7 @@ function useValidation(value, validators) {
         const re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
         re.test(value) ? setEmailErr(false) : setEmailErr(true);
       }
-      if (validator === 'isUserName' && validators['isUserName'] === 'EnRu') {
+      if (validator === 'isUserName' && validators['isUserName'] === true) {
         const re = /^[а-яА-ЯёЁa-zA-Z-\s]+$/i;
         re.test(value) ? setUserNameErr(false) : setUserNameErr(true);
       }
