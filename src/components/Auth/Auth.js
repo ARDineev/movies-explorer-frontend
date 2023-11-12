@@ -17,7 +17,7 @@ function Auth({
         <div className="auth__input-container">
           {showNameInput && ( // поле name отображаем только для страницы регистрации
             <>
-              <label className="auth__input-caption" for="auth-name">Имя</label>
+              <label className="auth__input-caption" htmlFor="auth-name">Имя</label>
               <input
                 className="auth__input"
                 id="auth-name"
@@ -27,6 +27,7 @@ function Auth({
                 required
                 minLength="2"
                 maxLength="30"
+                noValidate
                 onChange={formValue.name.onChange}
                 onBlur={formValue.name.onBlur}
               />
@@ -36,7 +37,7 @@ function Auth({
                   || (formValue.name.isDirty && !formValue.name.isEmptyErr && !formValue.name.isMinLengthErr && formValue.name.isUserNameErr && "Поле содержит недопустимые символы.")}</p>
             </>
           )}
-          <label className="auth__input-caption" for="auth-email">E-mail</label>
+          <label className="auth__input-caption" htmlFor="auth-email">E-mail</label>
           <input
             className="auth__input"
             id="auth-email"
@@ -46,6 +47,7 @@ function Auth({
             required
             minLength="2"
             maxLength="30"
+            noValidate
             onChange={formValue.email.onChange}
             onBlur={formValue.email.onBlur}
           />
@@ -53,7 +55,7 @@ function Auth({
             {(formValue.email.isDirty && formValue.email.isEmptyErr && "Поле не может быть пустым.")
               || (formValue.email.isDirty && !formValue.email.isEmptyErr && formValue.email.isMinLengthErr && `Минимальное количество символов: ${formValue.email.validators.minLength}.`)
               || (formValue.email.isDirty && !formValue.email.isEmptyErr && !formValue.email.isMinLengthErr && formValue.email.isEmailErr && "Поле не соответствует шаблону email.")}</p>
-          <label className="auth__input-caption" for="auth-password">Пароль</label>
+          <label className="auth__input-caption" htmlFor="auth-password">Пароль</label>
           <input
             className="auth__input"
             id="auth-password"
@@ -63,6 +65,7 @@ function Auth({
             required
             minLength="2"
             maxLength="30"
+            noValidate
             onChange={formValue.password.onChange}
             onBlur={formValue.password.onBlur}
           />

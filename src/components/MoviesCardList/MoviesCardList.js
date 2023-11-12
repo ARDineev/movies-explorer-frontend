@@ -17,15 +17,13 @@ function MoviesCardList({ moviesArr, onMovieSave, onMovieDel, isApiErr, checkMov
   const counter = React.useRef();
 
   // стейт-переменная с массивом карточек для рендера
-  const [moviesForRender, setMoviesForRender] = React.useState(
+  const [moviesForRender, setMoviesForRender] = React.useState( // карточки для рендера: начальные для /movies и все для /saved-movies
     href.includes('/movies') ? getInitialMoviesForRender() : moviesArr
   );
 
   const [isSearchBegin, setSearchBegin] = React.useState( // начинал ли пользователь поиск? Актуально для страницы /movies
     Boolean(JSON.parse(localStorage.getItem('allMovies')))
   );
-
-
 
   React.useEffect(() => {
     // вешаем слушатель изменения размера экрана,
@@ -40,28 +38,25 @@ function MoviesCardList({ moviesArr, onMovieSave, onMovieDel, isApiErr, checkMov
   });
 
   React.useEffect(() => {
-    setSearchBegin(Boolean(JSON.parse(localStorage.getItem('allMovies'))));
+    setSearchBegin(Boolean(JSON.parse(localStorage.getItem('allMovies')))); // если в хранилище есть фильмы, значит пользователь уже искал их
   }, [Boolean(JSON.parse(localStorage.getItem('allMovies')))]);
 
-
   React.useEffect(() => {
-    if (href.includes('/movies')) {
+    if (href.includes('/movies')) { // если страница /movies, то отрисовываем начальные карточки
       const movies = getInitialMoviesForRender();
       setMoviesForRender(movies);
     }
-    if (href.includes('/saved-movies')) {
+    if (href.includes('/saved-movies')) { // если страница /saved-movies, то отрисовываем все карточки
       setMoviesForRender(moviesArr)
     }
   }, [moviesArr]);
 
-
-  React.useEffect(() => {
+  React.useEffect(() => { // если страница /movies и изменилась ширина экрана, то заново отрисовываем начальные карточки
     if (href.includes('/movies')) {
       const movies = getInitialMoviesForRender();
       setMoviesForRender(movies);
     }
   }, [windowWidth]);
-
 
   function getInitialMoviesForRender() {
     // функция задает стартовые карточки для отрисовки - в зависимости от ширины экрана
@@ -87,7 +82,6 @@ function MoviesCardList({ moviesArr, onMovieSave, onMovieDel, isApiErr, checkMov
     }
     counter.current = moviesForRender.length;
     setMoviesForRender([...moviesForRender, ...moviesArr.slice(counter.current, counter.current + addNumMovies)]);
-
   }
 
   return (
@@ -103,6 +97,7 @@ function MoviesCardList({ moviesArr, onMovieSave, onMovieDel, isApiErr, checkMov
               duration={movie.duration}
               onMovieSave={onMovieSave}
               onMovieDel={onMovieDel}
+              trailerLink={movie.trailerLink}
               movie={movie}
               key={href.includes('/movies') ? movie.id : movie._id} // выбор ключа зависит от того, на какой мы странице
               checkMovieSave={checkMovieSave}
@@ -113,14 +108,14 @@ function MoviesCardList({ moviesArr, onMovieSave, onMovieDel, isApiErr, checkMov
         <Preloader />
       )}
 
-      <p className={`movies-card-list__not-found ${
-        ((href.includes('/movies') && isSearchBegin)
-        || href.includes('/saved-movies'))
-        && !isApiErr
+      <p className={`movies-card-list__not-found ${((href.includes('/movies') && isSearchBegin) // страница /movies и была попытка поиска
+          || href.includes('/saved-movies')) // или страница /saved-movies
+        && !isApiErr // сервер не вернул ошибку и длина массива карточек = 0
         && (moviesForRender.length === 0) && "movies-card-list__not-found_visible"}
         `}>Ничего не найдено</p>
 
-      {isApiErr && (<div>Сбой!!!!!!</div>)}
+      <p className={`movies-card-list__not-found ${isApiErr && "movies-card-list__not-found_visible"}
+        `}>Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз</p>
 
       {href.includes('/movies')
         && (moviesForRender.length < moviesArr.length)

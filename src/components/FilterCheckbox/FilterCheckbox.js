@@ -22,7 +22,7 @@ function FilterCheckbox(props) {
           className={`filter-checkbox__circle ${props.filterCheckBox.current ? "" : "filter-checkbox__circle_inactive"}`}>
         </span>
       </button>
-      <label className="filter-checkbox__caption" for="short-film">Короткометражки</label>
+      <label className="filter-checkbox__caption" htmlFor="short-film">Короткометражки</label>
     </div>
   )
 }

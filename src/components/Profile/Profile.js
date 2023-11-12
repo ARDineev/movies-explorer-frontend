@@ -51,7 +51,7 @@ function Profile({ handleLogOut, loggedIn, setCurrentUser }) {
           <h1 className="profile__title">Привет, {currentUser.name}!</h1>
           <form className="profile__form" onSubmit={handleSubmit}>
             <div className="profile__info-container">
-              <label className="profile__info-text" for="profile-name">Имя</label>
+              <label className="profile__info-text" htmlFor="profile-name">Имя</label>
               <input className="profile__info-input"
                 id="profile-name"
                 defaultValue={currentUser.name}
@@ -62,7 +62,6 @@ function Profile({ handleLogOut, loggedIn, setCurrentUser }) {
                 required
                 noValidate
                 name="name"
-                value={name.value}
                 onChange={name.onChange}
                 onBlur={name.onBlur}
               />
@@ -78,7 +77,7 @@ function Profile({ handleLogOut, loggedIn, setCurrentUser }) {
             </div>
 
             <div className="profile__info-container">
-              <label className="profile__info-text" for="profile-email">E-mail</label>
+              <label className="profile__info-text" htmlFor="profile-email">E-mail</label>
               <input className="profile__info-input"
                 id="profile-email"
                 defaultValue={currentUser.email}
@@ -89,7 +88,6 @@ function Profile({ handleLogOut, loggedIn, setCurrentUser }) {
                 required
                 noValidate
                 name="email"
-                value={email.value}
                 onChange={email.onChange}
                 onBlur={email.onBlur}
               />
