@@ -4,9 +4,10 @@ import Auth from '../Auth/Auth';
 import * as mainApi from '../../utils/MainApi';
 import useInput from '../../hooks/useInput';
 
-function Register() {
+function Register(props) {
   const [isRegErr, setRegErr] = React.useState(false); // обобщенная ошибка при попытке регистрации
   const [isEmailConflict, setEmailConflict] = React.useState(false); // ошибка 409 Conflict при совпадении email у пользователей
+  const [isLoading, setLoading] = React.useState(false); // признак загрузки, когда еще не получен ответ от сервера
 
   const formValue = {
     name: useInput('', { isEmpty: true, minLength: 2, isUserName: true }), // поле name валидируем на пустоту, минимальную длину и соответствие формату юзера
@@ -20,10 +21,21 @@ function Register() {
     e.preventDefault();
     const { email, password, name } = formValue;
     try {
-      await mainApi.register(email.value, password.value, name.value);
-      navigate('/signin', { replace: true });
-      setRegErr(false);
-      setEmailConflict(false)
+      setLoading(true);
+      let success = false; // успешная регистрация и авторизация
+      const response = await mainApi.register(email.value, password.value, name.value);
+      if (response) {
+        const data = await mainApi.authorize(email.value, password.value);
+        if (data.token) { // если токен есть в ответе сервера
+          localStorage.setItem('token', data.token);
+          success = await props.handleLogin();
+        }
+      }
+      if (success) {
+        navigate('/movies', { replace: true });
+        setRegErr(false);
+        setEmailConflict(false)
+      } else setRegErr(true);
     } catch (err) {
       if (err.message.startsWith('409')) { // сервер ответил ошибкой 409 Conflict
         setEmailConflict(true)
@@ -31,6 +43,8 @@ function Register() {
         setRegErr(true); // сервер ответил другой ошибкой
       }
       console.log(err);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -48,6 +62,7 @@ function Register() {
         formValue={formValue}
         isRegErr={isRegErr}
         isEmailConflict={isEmailConflict}
+        isLoading={isLoading}
       />
     </main>
   )

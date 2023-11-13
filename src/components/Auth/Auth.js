@@ -2,7 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 function Auth({
   title, name, btnCaption, text, linkName, link, showNameInput, onSubmit, formValue,
-  isRegErr, isEmailConflict, isNoToken, isBadToken, isUnAuth, isLoginErr
+  isRegErr, isEmailConflict, isNoToken, isBadToken, isUnAuth, isLoginErr, isLoading
 }) {
   const navigate = useNavigate();
 
@@ -82,7 +82,8 @@ function Auth({
             || (isUnAuth && "Вы ввели неправильный логин или пароль.")
             || (isLoginErr && "При авторизации произошла ошибка.")
           }</p>
-        <button className="auth__btn" type="submit" disabled={!(formValue.name.inputValid && formValue.email.inputValid && formValue.password.inputValid)}>{btnCaption}</button>
+        <button className="auth__btn" type="submit" disabled={(!(formValue.name.inputValid && formValue.email.inputValid && formValue.password.inputValid)
+        || isLoading)}>{btnCaption}</button>
       </form>
       <div className="auth__link-container">
         <p className="auth__text">{text}</p>

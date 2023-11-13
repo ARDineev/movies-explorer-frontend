@@ -11,9 +11,11 @@ function SearchForm({ searchMovies, setMoviesArr, allSavedMoviesArr, getInitialM
   const filterCheckBox = React.useRef( // состояние чек-бокса фильтрации по короткометражкам
     href.includes('/movies') ? JSON.parse(localStorage.getItem('filter')) || false : false // начальное состояние берется из хранилища для /movies
   );
+  const [isInSearch, setInSearch] = React.useState(false); // выполняется ли поиск (для блокировки кнопки сабмит)
 
   async function handleSubmit(e) {
     e.preventDefault();
+    setInSearch(true);
     if (href.includes('/movies')) { // если мы на вкладке "фильмы"
       if (!localStorage.getItem('allMovies')) { // если в хранилище нет фильмов, т.е. запрос ни разу не выполнялся
         const allMovies = await getInitialMovies(); // то запрашиваем фильмы с api beatfilm-movies
@@ -34,6 +36,7 @@ function SearchForm({ searchMovies, setMoviesArr, allSavedMoviesArr, getInitialM
       const searchedSavedMovies = searchMovies(allSavedMoviesArr, keyWord.value, filterCheckBox.current);
       setMoviesArr(searchedSavedMovies);
     }
+    setInSearch(false);
   }
 
   return (
@@ -51,7 +54,7 @@ function SearchForm({ searchMovies, setMoviesArr, allSavedMoviesArr, getInitialM
           onChange={keyWord.onChange}
           onBlur={keyWord.onBlur}
         />
-        <button disabled={!keyWord.inputValid} className="search-form__btn" type="submit"></button>
+        <button disabled={!keyWord.inputValid || isInSearch} className="search-form__btn" type="submit"></button>
         <FilterCheckbox startSearch={handleSubmit} filterCheckBox={filterCheckBox} keyWordEmptyErr={keyWord.isEmptyErr} />
       </form>
     </section>

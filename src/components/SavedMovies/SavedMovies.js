@@ -7,10 +7,6 @@ import Footer from '../Footer/Footer';
 
 function SavedMovies({ loggedIn, moviesArr, onMovieDel, searchMovies, setMoviesArr, allSavedMoviesArr, isApiErr }) {
 
-   React.useEffect(() => {
-    setMoviesArr(allSavedMoviesArr);
-  }, []);
-
   return (
     <>
       <Header loggedIn={loggedIn} />

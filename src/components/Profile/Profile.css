@@ -196,6 +196,22 @@
   visibility: visible;
 }
 
+.profile__success-mesage {
+  margin: 0;
+  padding-bottom: 20px;
+  color: #3DDC84;
+  font-size: 11px;
+  text-align: center;
+  transition: visibility 0.5s, opacity 0.5s;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.profile__success-mesage_visible {
+  opacity: 1;
+  visibility: visible;
+}
+
 .profile__name-error {
   position: absolute;
   bottom: 0;

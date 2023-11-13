@@ -9,6 +9,7 @@ function Login(props) {
   const [isBadToken, setBadToken] = React.useState(false); // сервер вернул токен, по которому невозможно залогиниться
   const [isUnAuth, setUnAuth] = React.useState(false); // ошибка 401 Unauthorized - неправильный логин или пароль
   const [isLoginErr, setLoginErr] = React.useState(false); // обобщенная ошибка при попытке логина
+  const [isLoading, setLoading] = React.useState(false); // признак загрузки, когда еще не получен ответ от сервера
 
   const formValue = { // объект с полями формы
     name: useInput('', {}), // name не будет отрисовываться
@@ -22,6 +23,7 @@ function Login(props) {
     e.preventDefault();
 
     try {
+      setLoading(true);
       const data = await mainApi.authorize(formValue.email.value, formValue.password.value);
       if (data.token) { // если токен есть в ответе сервера
         localStorage.setItem('token', data.token);
@@ -31,7 +33,7 @@ function Login(props) {
           setNoToken(false);
           setLoginErr(false);
           setBadToken(false);
-          navigate('/', { replace: true });
+          navigate('/movies', { replace: true });
         } else { // а если нет, значит токен - плохой
           setBadToken(true);
         }
@@ -43,6 +45,8 @@ function Login(props) {
         setLoginErr(true); // сервер ответил другой ошибкой
       }
       console.log(err);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -62,6 +66,7 @@ function Login(props) {
         isBadToken={isBadToken}
         isUnAuth={isUnAuth}
         isLoginErr={isLoginErr}
+        isLoading={isLoading}
       />
     </main>
   )

@@ -128,8 +128,10 @@ function App() {
         nameEN: currentMovie.nameEN,
       });
       setAllSavedMoviesArr([movie, ...allSavedMoviesArr]); // пополняем массив всех сохраненных фильмов
+      return true
     } catch (err) {
       console.log(err);
+      return false
     }
   }
 
@@ -153,8 +155,10 @@ function App() {
       setAllSavedMoviesArr((oldMovieList) => {
         return oldMovieList.filter(movie => movie._id !== currentMovie._id);
       });
+      return true
     } catch (err) {
       console.log(err);
+      return false
     }
   }
 
@@ -224,7 +228,7 @@ function App() {
             <ProtectedRouteElement element={Profile} isAllowed={loggedIn} redirectPath="/" handleLogOut={handleLogOut} loggedIn={loggedIn} setCurrentUser={setCurrentUser} />
           } />
           <Route exact path="/signin" element={<Login handleLogin={handleLogin} />} />
-          <Route exact path="/signup" element={<Register />} />
+          <Route exact path="/signup" element={<Register handleLogin={handleLogin}/>} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </CurrentUserContext.Provider>

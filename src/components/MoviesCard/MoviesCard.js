@@ -33,9 +33,14 @@ function MoviesCard(props) {
     setIsMouseOn(false);
   }
 
-  function handleSelectMovie() {
-    isSelected ? props.onMovieDel(props.movie) : props.onMovieSave(props.movie);
-    setIsSelected(!isSelected);
+  async function handleSelectMovie() { // состояние фильма (сохранен/не сохранен) меняется с учетом ответа сервера
+    if (isSelected) {
+      const success = await props.onMovieDel(props.movie);
+      success && setIsSelected(false);
+    } else {
+      const success = await props.onMovieSave(props.movie);
+      success && setIsSelected(true);
+    }
   }
 
   function handleDelMovie() {

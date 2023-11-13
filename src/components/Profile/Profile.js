@@ -10,12 +10,24 @@ function Profile({ handleLogOut, loggedIn, setCurrentUser }) {
   const [isEdit, setIsEdit] = React.useState(false);
   const [isCommonPatchErr, setCommonPatchErr] = React.useState(false); // обобщенная ошибка при попытке патч-запроса
   const [isEmailConflict, setEmailConflict] = React.useState(false); // ошибка 409 Conflict при совпадении email у пользователей
+  const [isBtnDisabled, setBtnDisabled] = React.useState(true); // блокирована ли кнопка отправки формы
+  const [isSuccessPatchMes, setSuccessPatchMes] = React.useState(false); // сообщение об успешном патч-запросе
+
   const name = useInput(currentUser.name, { isEmpty: true, minLength: 2, maxLength: 30, isUserName: true });
   const email = useInput(currentUser.email, { isEmpty: true, isEmail: true });
 
+  React.useEffect(() => { // блокировка кнопки отправки формы при невалидности инпутов, а также при совпадении со старыми данными
+    if (!name.inputValid || !email.inputValid
+      || (name.value === currentUser.name && email.value === currentUser.email)) {
+      setBtnDisabled(true);
+    } else {
+      setBtnDisabled(false);
+    }
+  }, [name.value, email.value, name.inputValid, email.inputValid]);
 
   function handleEditOpen() {
     setIsEdit(true);
+    setSuccessPatchMes(false);
   }
 
   const handleSubmit = async (e) => {
@@ -23,17 +35,22 @@ function Profile({ handleLogOut, loggedIn, setCurrentUser }) {
     if (!name.value || !email.value) {
       return;
     }
-
     try {
+      setBtnDisabled(true);
+      setSuccessPatchMes(false);
       const data = await mainApi.patchUserInfo(email.value, name.value);
       if (data.email && data.name) {
         setCurrentUser(data)
+        setIsEdit(false);
+        setCommonPatchErr(false);
+        setEmailConflict(false);
+        setSuccessPatchMes(true);
+      } else {
+        setBtnDisabled(false);
+        setCommonPatchErr(true)
       }
-      setIsEdit(false);
-      setCommonPatchErr(false);
-      setEmailConflict(false)
-
     } catch (err) {
+      setBtnDisabled(false);
       if (err.message.startsWith('409')) {
         setEmailConflict(true)
       } else {
@@ -104,10 +121,13 @@ function Profile({ handleLogOut, loggedIn, setCurrentUser }) {
             <p className={
               `profile__error-mesage ${isEdit && isEmailConflict && "profile__error-mesage_visible"}`
             }>Пользователь с таким email уже существует.</p>
+            <p className={
+              `profile__success-mesage ${isSuccessPatchMes && "profile__success-mesage_visible"}`
+            }>Данные профиля успешно обновлены!</p>
 
             {isEdit || (<button className="profile__edit-btn" type="button" onClick={handleEditOpen}>Редактировать</button>)}
             {isEdit || (<button className="profile__log-out-btn" type="button" onClick={handleLogOut}>Выйти из аккаунта</button>)}
-            {isEdit && (<button className="profile__save-btn" type="submit" disabled={!(name.inputValid && email.inputValid)}>Сохранить</button>)}
+            {isEdit && (<button className="profile__save-btn" type="submit" disabled={isBtnDisabled}>Сохранить</button>)}
           </form>
         </section>
       </main>

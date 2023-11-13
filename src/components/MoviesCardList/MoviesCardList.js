@@ -3,7 +3,7 @@ import MoviesCard from '../MoviesCard/MoviesCard';
 import Preloader from '../Preloader/Preloader';
 
 
-function MoviesCardList({ moviesArr, onMovieSave, onMovieDel, isApiErr, checkMovieSave }) {
+function MoviesCardList({ moviesArr, onMovieSave, onMovieDel, isApiErr, checkMovieSave, allSavedMoviesArr }) {
   /* Логика работы согласно ТЗ:
   Ширина 1280px — 4 ряда карточек. Кнопка «Ещё» загружает дополнительный ряд карточек.
   Ширина 768px — 4 ряда карточек. Кнопка «Ещё» загружает дополнительный ряд карточек.
@@ -18,7 +18,7 @@ function MoviesCardList({ moviesArr, onMovieSave, onMovieDel, isApiErr, checkMov
 
   // стейт-переменная с массивом карточек для рендера
   const [moviesForRender, setMoviesForRender] = React.useState( // карточки для рендера: начальные для /movies и все для /saved-movies
-    href.includes('/movies') ? getInitialMoviesForRender() : moviesArr
+    href.includes('/movies') ? getInitialMoviesForRender() : allSavedMoviesArr
   );
 
   const [isSearchBegin, setSearchBegin] = React.useState( // начинал ли пользователь поиск? Актуально для страницы /movies
@@ -50,6 +50,12 @@ function MoviesCardList({ moviesArr, onMovieSave, onMovieDel, isApiErr, checkMov
       setMoviesForRender(moviesArr)
     }
   }, [moviesArr]);
+
+  React.useEffect(() => { // при уходе с /saved-movies и возвращении на нее - массив для рендера перезаписывается, и он снова содержит все карточки
+    if (href.includes('/saved-movies')) {
+      setMoviesForRender(allSavedMoviesArr);
+    }
+  }, [window.location.href]);
 
   React.useEffect(() => { // если страница /movies и изменилась ширина экрана, то заново отрисовываем начальные карточки
     if (href.includes('/movies')) {
@@ -109,7 +115,7 @@ function MoviesCardList({ moviesArr, onMovieSave, onMovieDel, isApiErr, checkMov
       )}
 
       <p className={`movies-card-list__not-found ${((href.includes('/movies') && isSearchBegin) // страница /movies и была попытка поиска
-          || href.includes('/saved-movies')) // или страница /saved-movies
+        || href.includes('/saved-movies')) // или страница /saved-movies
         && !isApiErr // сервер не вернул ошибку и длина массива карточек = 0
         && (moviesForRender.length === 0) && "movies-card-list__not-found_visible"}
         `}>Ничего не найдено</p>
