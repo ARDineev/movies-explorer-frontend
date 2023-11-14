@@ -164,10 +164,12 @@ function App() {
     }
     // далее, общий блок. Через него удаляются фильмы при клике с любой страницы
     try {
+
       await mainApi.delMovie(currentMovie._id);
       setSavedMoviesArr((oldMovieList) => {
         return oldMovieList.filter(movie => movie._id !== currentMovie._id);
       });
+   //   console.log(savedMoviesArr);
       setAllSavedMoviesArr((oldMovieList) => {
         return oldMovieList.filter(movie => movie._id !== currentMovie._id);
       });

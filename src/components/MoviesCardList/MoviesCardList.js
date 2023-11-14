@@ -15,7 +15,7 @@ import {
   SMALL_WINDOW_MORE_NUM
 } from '../../utils/constants';
 
-function MoviesCardList({ moviesArr, onMovieSave, onMovieDel, isApiErr, checkMovieSave, allSavedMoviesArr }) {
+function MoviesCardList({ moviesArr, setMoviesArr, onMovieSave, onMovieDel, isApiErr, checkMovieSave, allSavedMoviesArr }) {
   /* Логика работы согласно ТЗ:
   Ширина 1280px — 4 ряда карточек. Кнопка «Ещё» загружает дополнительный ряд карточек.
   Ширина 768px — 4 ряда карточек. Кнопка «Ещё» загружает дополнительный ряд карточек.
@@ -65,7 +65,7 @@ function MoviesCardList({ moviesArr, onMovieSave, onMovieDel, isApiErr, checkMov
 
   React.useEffect(() => { // при уходе с /saved-movies и возвращении на нее - массив для рендера перезаписывается, и он снова содержит все карточки
     if (href.includes(SAVED_MOVIES_PATH)) {
-      setMoviesForRender(allSavedMoviesArr);
+      setMoviesArr(allSavedMoviesArr);
     }
   }, [window.location.href]);
 

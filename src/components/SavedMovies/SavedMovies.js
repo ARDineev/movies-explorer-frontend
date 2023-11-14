@@ -12,7 +12,7 @@ function SavedMovies({ loggedIn, moviesArr, onMovieDel, searchMovies, setMoviesA
       <Header loggedIn={loggedIn} />
       <main className="main">
         <SearchForm searchMovies={searchMovies} moviesArr={moviesArr} setMoviesArr={setMoviesArr} allSavedMoviesArr={allSavedMoviesArr}/>
-        <MoviesCardList moviesArr={moviesArr} onMovieDel={onMovieDel} allSavedMoviesArr={allSavedMoviesArr} isApiErr={isApiErr}/>
+        <MoviesCardList moviesArr={moviesArr} onMovieDel={onMovieDel} setMoviesArr={setMoviesArr} allSavedMoviesArr={allSavedMoviesArr} isApiErr={isApiErr}/>
       </main>
       <Footer />
     </>
