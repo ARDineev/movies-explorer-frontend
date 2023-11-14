@@ -12,6 +12,7 @@ import { getMovies } from '../../utils/MoviesApi';
 import CurrentUserContext from '../../contexts/CurrentUserContext';
 import ProtectedRouteElement from '../ProtectedRoute/ProtectedRoute';
 import Preloader from '../Preloader/Preloader';
+import { SHORT_MOVIE_TIME, TOKEN_KEY } from '../../utils/constants';
 
 
 function App() {
@@ -75,7 +76,7 @@ function App() {
   function handleLogOut() {
     // разлогиниваемся и чистим localStorage
     setLoggedIn(false);
-    localStorage.removeItem('token');
+    localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem('allMovies');
     localStorage.removeItem('filter');
     localStorage.removeItem('searchedMovies');
@@ -86,7 +87,7 @@ function App() {
 
   async function tokenCheck() {
     // проверям токен в хранилище. Если токен валидный - сразу логинимся
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem(TOKEN_KEY);
     if (!token) {
       setLoggedIn(false);
       return;
@@ -173,7 +174,7 @@ function App() {
         movie.nameRU.toLowerCase().includes(keyWord.toLowerCase())
         || movie.nameEN.toLowerCase().includes(keyWord.toLowerCase())
       ) {
-        if (filter && (movie.duration < 40)) {
+        if (filter && (movie.duration < SHORT_MOVIE_TIME)) {
           movies.push(movie);
         }
         if (!filter) {
@@ -227,8 +228,10 @@ function App() {
           <Route exact path="/profile" element={
             <ProtectedRouteElement element={Profile} isAllowed={loggedIn} redirectPath="/" handleLogOut={handleLogOut} loggedIn={loggedIn} setCurrentUser={setCurrentUser} />
           } />
-          <Route exact path="/signin" element={<Login handleLogin={handleLogin} />} />
-          <Route exact path="/signup" element={<Register handleLogin={handleLogin}/>} />
+          <Route exact path="/signin" element={
+            <ProtectedRouteElement element={Login} isAllowed={!loggedIn} redirectPath="/" handleLogin={handleLogin} />} />
+          <Route exact path="/signup" element={
+            <ProtectedRouteElement element={Register} isAllowed={!loggedIn} redirectPath="/" handleLogin={handleLogin} />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </CurrentUserContext.Provider>
