@@ -3,6 +3,15 @@ import Auth from '../Auth/Auth';
 import { useNavigate } from 'react-router-dom';
 import * as mainApi from '../../utils/MainApi';
 import useInput from '../../hooks/useInput';
+import {
+  TOKEN_KEY,
+  MOVIES_PATH,
+  SIGNUP_PATH,
+  EMAIL_MIN_LENGTH,
+  PASSWORD_MIN_LENGTH,
+  UNAUTHORIZED_CODE,
+} from '../../utils/constants';
+
 
 function Login(props) {
   const [isNoToken, setNoToken] = React.useState(false); // сервер не вернул токен или передал его не в том формате
@@ -13,8 +22,8 @@ function Login(props) {
 
   const formValue = { // объект с полями формы
     name: useInput('', {}), // name не будет отрисовываться
-    email: useInput('', { isEmpty: true, minLength: 2, isEmail: true }), // поле email валидируем на пустоту, минимальную длину и соответствие формату email
-    password: useInput('', { isEmpty: true, minLength: 8 }), // поле password валидируем на минимальную длину
+    email: useInput('', { isEmpty: true, minLength: EMAIL_MIN_LENGTH, isEmail: true }), // поле email валидируем на пустоту, минимальную длину и соответствие формату email
+    password: useInput('', { isEmpty: true, minLength: PASSWORD_MIN_LENGTH }), // поле password валидируем на минимальную длину
   };
 
   const navigate = useNavigate();
@@ -26,20 +35,20 @@ function Login(props) {
       setLoading(true);
       const data = await mainApi.authorize(formValue.email.value, formValue.password.value);
       if (data.token) { // если токен есть в ответе сервера
-        localStorage.setItem('token', data.token);
+        localStorage.setItem(TOKEN_KEY, data.token);
         const success = await props.handleLogin();
         if (success) { // если получилось залогиниться по токену
           setUnAuth(false);
           setNoToken(false);
           setLoginErr(false);
           setBadToken(false);
-          navigate('/movies', { replace: true });
+          navigate(MOVIES_PATH, { replace: true });
         } else { // а если нет, значит токен - плохой
           setBadToken(true);
         }
       } else { setNoToken(true) } // если токена не было в ответе сервера
     } catch (err) {
-      if (err.message.startsWith('401')) { // сервер ответил ошибкой 401
+      if (err.message.startsWith(UNAUTHORIZED_CODE)) { // сервер ответил ошибкой 401
         setUnAuth(true);
       } else {
         setLoginErr(true); // сервер ответил другой ошибкой
@@ -58,7 +67,7 @@ function Login(props) {
         btnCaption="Войти"
         text="Ещё не зарегистрированы?"
         linkName="Регистрация"
-        link="/signup"
+        link={SIGNUP_PATH}
         showNameInput={false}
         onSubmit={handleSubmit}
         formValue={formValue}

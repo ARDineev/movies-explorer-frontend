@@ -1,9 +1,10 @@
 import React from 'react';
+import { EMAIL_REG_EXP, USERNAME_REG_EXP } from '../utils/constants';
 
 function useValidation(value, validators) {
   // кастомный расширяемый хук валидации. Перечень проверок может быть пополнен при необходимости
   // какие проверки будет проходить конкретный инпут - определяется при создании управляемого инпута через хук useInput
-  
+
   const [isEmptyErr, setEmptyErr] = React.useState(false); // ошибка валидации "поле пустое"
   const [isMinLengthErr, setMinLengthErr] = React.useState(false); // ошибка валидации "длина поля менее допустимого значения"
   const [isMaxLengthErr, setMaxLengthErr] = React.useState(false); // ошибка валидации "длина поля более допустимого значения"
@@ -23,12 +24,10 @@ function useValidation(value, validators) {
         value.length > validators['maxLength'] ? setMaxLengthErr(true) : setMaxLengthErr(false);
       }
       if (validator === 'isEmail' && validators['isEmail'] === true) {
-        const re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-        re.test(value) ? setEmailErr(false) : setEmailErr(true);
+        EMAIL_REG_EXP.test(value) ? setEmailErr(false) : setEmailErr(true);
       }
       if (validator === 'isUserName' && validators['isUserName'] === true) {
-        const re = /^[а-яА-ЯёЁa-zA-Z-\s]+$/i;
-        re.test(value) ? setUserNameErr(false) : setUserNameErr(true);
+        USERNAME_REG_EXP.test(value) ? setUserNameErr(false) : setUserNameErr(true);
       }
     }
   }, [value]);

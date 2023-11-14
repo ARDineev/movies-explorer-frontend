@@ -1,4 +1,5 @@
 import React from 'react';
+import { MOVIES_PATH, ALL_MOVIES_KEY } from '../../utils/constants';
 
 function FilterCheckbox(props) {
   const href = window.location.href; // текущая страница
@@ -14,7 +15,7 @@ function FilterCheckbox(props) {
       <button
         className={`filter-checkbox__ellipse ${props.filterCheckBox.current ? "" : "filter-checkbox__ellipse_inactive"}`}
         onClick={handleFilterClick}
-        disabled={(href.includes('/movies') && !localStorage.getItem('allMovies')) || props.keyWordEmptyErr}
+        disabled={(href.includes(MOVIES_PATH) && !localStorage.getItem(ALL_MOVIES_KEY)) || props.keyWordEmptyErr}
         type="button"
         id="short-film"
       >

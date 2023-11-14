@@ -3,6 +3,13 @@ import Header from '../Header/Header';
 import CurrentUserContext from '../../contexts/CurrentUserContext';
 import * as mainApi from '../../utils/MainApi';
 import useInput from '../../hooks/useInput';
+import {
+  EMAIL_MIN_LENGTH,
+  EMAIL_MAX_LENGTH,
+  NAME_MIN_LENGTH,
+  NAME_MAX_LENGTH,
+  CONFLICT_CODE
+} from '../../utils/constants';
 
 function Profile({ handleLogOut, loggedIn, setCurrentUser }) {
 
@@ -13,7 +20,7 @@ function Profile({ handleLogOut, loggedIn, setCurrentUser }) {
   const [isBtnDisabled, setBtnDisabled] = React.useState(true); // блокирована ли кнопка отправки формы
   const [isSuccessPatchMes, setSuccessPatchMes] = React.useState(false); // сообщение об успешном патч-запросе
 
-  const name = useInput(currentUser.name, { isEmpty: true, minLength: 2, maxLength: 30, isUserName: true });
+  const name = useInput(currentUser.name, { isEmpty: true, minLength: NAME_MIN_LENGTH, maxLength: NAME_MAX_LENGTH, isUserName: true });
   const email = useInput(currentUser.email, { isEmpty: true, isEmail: true });
 
   React.useEffect(() => { // блокировка кнопки отправки формы при невалидности инпутов, а также при совпадении со старыми данными
@@ -51,7 +58,7 @@ function Profile({ handleLogOut, loggedIn, setCurrentUser }) {
       }
     } catch (err) {
       setBtnDisabled(false);
-      if (err.message.startsWith('409')) {
+      if (err.message.startsWith(CONFLICT_CODE)) {
         setEmailConflict(true)
       } else {
         setCommonPatchErr(true);
@@ -74,8 +81,8 @@ function Profile({ handleLogOut, loggedIn, setCurrentUser }) {
                 defaultValue={currentUser.name}
                 placeholder="Ваше имя"
                 readOnly={!isEdit}
-                minLength="2"
-                maxLength="30"
+                minLength={NAME_MIN_LENGTH}
+                maxLength={NAME_MAX_LENGTH}
                 required
                 noValidate
                 name="name"
@@ -100,8 +107,8 @@ function Profile({ handleLogOut, loggedIn, setCurrentUser }) {
                 defaultValue={currentUser.email}
                 placeholder="Ваш email"
                 readOnly={!isEdit}
-                minLength="2"
-                maxLength="40"
+                minLength={EMAIL_MIN_LENGTH}
+                maxLength={EMAIL_MAX_LENGTH}
                 required
                 noValidate
                 name="email"

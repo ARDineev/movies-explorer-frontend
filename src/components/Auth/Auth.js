@@ -1,4 +1,13 @@
 import { Link, useNavigate } from 'react-router-dom';
+import {
+  MAIN_PATH,
+  EMAIL_MIN_LENGTH,
+  EMAIL_MAX_LENGTH,
+  PASSWORD_MIN_LENGTH,
+  PASSWORD_MAX_LENGTH,
+  NAME_MIN_LENGTH,
+  NAME_MAX_LENGTH
+} from '../../utils/constants';
 
 function Auth({
   title, name, btnCaption, text, linkName, link, showNameInput, onSubmit, formValue,
@@ -7,7 +16,7 @@ function Auth({
   const navigate = useNavigate();
 
   const handleLogoClick = () => {
-    navigate('/', { replace: true });
+    navigate(MAIN_PATH, { replace: true });
   }
   return (
     <section className="auth">
@@ -25,8 +34,8 @@ function Auth({
                 name="name"
                 placeholder="Ваше имя"
                 required
-                minLength="2"
-                maxLength="30"
+                minLength={NAME_MIN_LENGTH}
+                maxLength={NAME_MAX_LENGTH}
                 noValidate
                 onChange={formValue.name.onChange}
                 onBlur={formValue.name.onBlur}
@@ -45,8 +54,8 @@ function Auth({
             name="email"
             placeholder="Ваш email"
             required
-            minLength="2"
-            maxLength="30"
+            minLength={EMAIL_MIN_LENGTH}
+            maxLength={EMAIL_MAX_LENGTH}
             noValidate
             onChange={formValue.email.onChange}
             onBlur={formValue.email.onBlur}
@@ -63,8 +72,8 @@ function Auth({
             name="password"
             placeholder="Ваш пароль"
             required
-            minLength="2"
-            maxLength="30"
+            minLength={PASSWORD_MIN_LENGTH}
+            maxLength={PASSWORD_MAX_LENGTH}
             noValidate
             onChange={formValue.password.onChange}
             onBlur={formValue.password.onBlur}

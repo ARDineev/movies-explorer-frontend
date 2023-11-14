@@ -12,14 +12,29 @@ import { getMovies } from '../../utils/MoviesApi';
 import CurrentUserContext from '../../contexts/CurrentUserContext';
 import ProtectedRouteElement from '../ProtectedRoute/ProtectedRoute';
 import Preloader from '../Preloader/Preloader';
-import { SHORT_MOVIE_TIME, TOKEN_KEY } from '../../utils/constants';
+import {
+  SHORT_MOVIE_TIME,
+  TOKEN_KEY,
+  ALL_MOVIES_KEY,
+  FILTER_KEY,
+  SEARCHED_MOVIES_KEY,
+  KEYWORD_KEY,
+  IMG_PRE_LINK,
+  MAIN_PATH,
+  MOVIES_PATH,
+  SAVED_MOVIES_PATH,
+  PROFILE_PATH,
+  SIGNIN_PATH,
+  SIGNUP_PATH,
+  ANY_PATH,
+} from '../../utils/constants';
 
 
 function App() {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = React.useState({ name: '', email: '' });
   const [loggedIn, setLoggedIn] = React.useState(undefined); // залогинен ли пользователь. Undefined - чтобы избежать лишних "прыжков" по страницам
-  const [moviesArr, setMoviesArr] = React.useState(JSON.parse(localStorage.getItem('searchedMovies')) || []); // отфильтрованные фильмы /movies
+  const [moviesArr, setMoviesArr] = React.useState(JSON.parse(localStorage.getItem(SEARCHED_MOVIES_KEY)) || []); // отфильтрованные фильмы /movies
   const [savedMoviesArr, setSavedMoviesArr] = React.useState([]); // отфильтрованные сохраненные фильмы для рендера /saved-movies
   const [allSavedMoviesArr, setAllSavedMoviesArr] = React.useState([]); // все сохраненные фильмы
   const [isMainApiErr, setMainApiErr] = React.useState(undefined); // ошибка при получении данных с основного бэкэнда. После запроса примет значение true или false
@@ -77,12 +92,12 @@ function App() {
     // разлогиниваемся и чистим localStorage
     setLoggedIn(false);
     localStorage.removeItem(TOKEN_KEY);
-    localStorage.removeItem('allMovies');
-    localStorage.removeItem('filter');
-    localStorage.removeItem('searchedMovies');
-    localStorage.removeItem('keyWord');
+    localStorage.removeItem(ALL_MOVIES_KEY);
+    localStorage.removeItem(FILTER_KEY);
+    localStorage.removeItem(SEARCHED_MOVIES_KEY);
+    localStorage.removeItem(KEYWORD_KEY);
     setMoviesArr([]);
-    navigate('/', { replace: true });
+    navigate(MAIN_PATH, { replace: true });
   };
 
   async function tokenCheck() {
@@ -120,9 +135,9 @@ function App() {
         duration: currentMovie.duration,
         year: currentMovie.year,
         description: currentMovie.description,
-        image: 'https://api.nomoreparties.co' + currentMovie.image.url,
+        image: IMG_PRE_LINK + currentMovie.image.url,
         trailerLink: currentMovie.trailerLink,
-        thumbnail: 'https://api.nomoreparties.co' + currentMovie.image.formats.thumbnail.url,
+        thumbnail: IMG_PRE_LINK + currentMovie.image.formats.thumbnail.url,
         owner: currentMovie.owner,
         movieId: currentMovie.id,
         nameRU: currentMovie.nameRU,
@@ -193,12 +208,12 @@ function App() {
     <>
       <CurrentUserContext.Provider value={currentUser}>
         <Routes>
-          <Route exact path="/" element={<Main loggedIn={loggedIn} />} />
-          <Route exact path="/movies" element={
+          <Route exact path={MAIN_PATH} element={<Main loggedIn={loggedIn} />} />
+          <Route exact path={MOVIES_PATH} element={
             <ProtectedRouteElement
               element={Movies}
               isAllowed={loggedIn}
-              redirectPath="/"
+              redirectPath={MAIN_PATH}
               loggedIn={loggedIn}
               moviesArr={moviesArr}
               onMovieSave={handleMovieSave}
@@ -211,11 +226,11 @@ function App() {
               isMainApiErr={isMainApiErr}
             />
           } />
-          <Route exact path="/saved-movies" element={
+          <Route exact path={SAVED_MOVIES_PATH} element={
             <ProtectedRouteElement
               element={SavedMovies}
               isAllowed={loggedIn}
-              redirectPath="/"
+              redirectPath={MAIN_PATH}
               loggedIn={loggedIn}
               moviesArr={savedMoviesArr}
               onMovieDel={handleMovieDelete}
@@ -225,14 +240,14 @@ function App() {
               isApiErr={isMainApiErr}
             />
           } />
-          <Route exact path="/profile" element={
-            <ProtectedRouteElement element={Profile} isAllowed={loggedIn} redirectPath="/" handleLogOut={handleLogOut} loggedIn={loggedIn} setCurrentUser={setCurrentUser} />
+          <Route exact path={PROFILE_PATH} element={
+            <ProtectedRouteElement element={Profile} isAllowed={loggedIn} redirectPath={MAIN_PATH} handleLogOut={handleLogOut} loggedIn={loggedIn} setCurrentUser={setCurrentUser} />
           } />
-          <Route exact path="/signin" element={
-            <ProtectedRouteElement element={Login} isAllowed={!loggedIn} redirectPath="/" handleLogin={handleLogin} />} />
-          <Route exact path="/signup" element={
-            <ProtectedRouteElement element={Register} isAllowed={!loggedIn} redirectPath="/" handleLogin={handleLogin} />} />
-          <Route path="*" element={<NotFound />} />
+          <Route exact path={SIGNIN_PATH} element={
+            <ProtectedRouteElement element={Login} isAllowed={!loggedIn} redirectPath={MAIN_PATH} handleLogin={handleLogin} />} />
+          <Route exact path={SIGNUP_PATH} element={
+            <ProtectedRouteElement element={Register} isAllowed={!loggedIn} redirectPath={MAIN_PATH} handleLogin={handleLogin} />} />
+          <Route path={ANY_PATH} element={<NotFound />} />
         </Routes>
       </CurrentUserContext.Provider>
     </>
