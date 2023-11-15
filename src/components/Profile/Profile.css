@@ -49,6 +49,7 @@
   width: 410px;
   justify-content: space-between;
   padding: 16px 0 16px;
+  position: relative;
 }
 
 @media screen and (max-width: 500px) {
@@ -59,18 +60,18 @@
 
 .profile__info-container:nth-child(2) {
   border-top: 1px solid #424242;
-  padding-bottom: 224px;
+  padding-bottom: 160px;
 }
 
 @media screen and (max-width: 800px) {
   .profile__info-container:nth-child(2) {
-    padding-bottom: 208px;
+    padding-bottom: 150px;
   }
 }
 
 @media screen and (max-width: 500px) {
   .profile__info-container:nth-child(2) {
-    padding-bottom: 380px;
+    padding-bottom: 320px;
   }
 }
 
@@ -162,9 +163,99 @@
   opacity: 0.7;
 }
 
+.profile__save-btn:disabled {
+  cursor: default;
+  background-color: #F8F8F8;
+  color: #C2C2C2;
+}
+
+.profile__save-btn:hover:disabled {
+  opacity: 1;
+}
+
 @media screen and (max-width: 500px) {
   .profile__save-btn {
     width: 260px;
     height: 45px;
+  }
+}
+
+.profile__error-mesage {
+  margin: 0;
+  padding-bottom: 20px;
+  color: #FF004C;
+  font-size: 11px;
+  text-align: center;
+  transition: visibility 0.5s, opacity 0.5s;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.profile__error-mesage_visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.profile__success-mesage {
+  margin: 0;
+  padding-bottom: 20px;
+  color: #3DDC84;
+  font-size: 11px;
+  text-align: center;
+  transition: visibility 0.5s, opacity 0.5s;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.profile__success-mesage_visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.profile__name-error {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin: 0;
+  color: #FF004C;
+  font-size: 10px;
+  text-align: center;
+  transition: visibility 0.5s, opacity 0.5s;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.profile__name-error_visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.profile__email-error {
+  position: absolute;
+  bottom: 145px;
+  right: 0;
+  margin: 0;
+  color: #FF004C;
+  font-size: 10px;
+  text-align: center;
+  transition: visibility 0.5s, opacity 0.5s;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.profile__email-error_visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+@media screen and (max-width: 800px) {
+  .profile__email-error {
+    bottom: 135px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .profile__email-error {
+    bottom: 305px;
   }
 }

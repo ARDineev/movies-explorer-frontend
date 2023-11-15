@@ -1,6 +1,15 @@
 import React from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import Navigation from '../Navigation/Navigation';
+import {
+  MAIN_PATH,
+  MOVIES_PATH,
+  SAVED_MOVIES_PATH,
+  PROFILE_PATH,
+  SIGNIN_PATH,
+  SIGNUP_PATH,
+  WINDOW_WIDTH_BURGER
+} from '../../utils/constants';
 
 function Header({ loggedIn }) {
   const [windowWidth, setWindowWidth] = React.useState(window.innerWidth);
@@ -22,41 +31,41 @@ function Header({ loggedIn }) {
   }
 
   const handleLogoClick = () => {
-    navigate('/', { replace: true });
+    navigate(MAIN_PATH, { replace: true });
   }
 
   const handleProfileClick = () => {
-    navigate('/profile', { replace: true });
+    navigate(PROFILE_PATH, { replace: true });
   }
 
   const handleSignInClick = () => {
-    navigate('/signin', { replace: true });
+    navigate(SIGNIN_PATH, { replace: true });
   }
 
   return (
     <header className="header">
       <div className="header__logo" onClick={handleLogoClick}></div>
 
-      {loggedIn && windowWidth <= 800 && (
+      {loggedIn && windowWidth <= WINDOW_WIDTH_BURGER && (
         <div className="header__burger" onClick={handleBurgerClick}></div>
       )}
 
-      {loggedIn && windowWidth > 800 && (<>
+      {loggedIn && windowWidth > WINDOW_WIDTH_BURGER && (<>
         <div className="header__links">
-          <NavLink to="/movies" className={({ isActive }) => `header__link ${isActive ? "header__link_active" : ""}`}>Фильмы</NavLink>
-          <NavLink to="/saved-movies" className={({ isActive }) => `header__link ${isActive ? "header__link_active" : ""}`}>Сохранённые фильмы</NavLink>
+          <NavLink to={MOVIES_PATH} className={({ isActive }) => `header__link ${isActive ? "header__link_active" : ""}`}>Фильмы</NavLink>
+          <NavLink to={SAVED_MOVIES_PATH} className={({ isActive }) => `header__link ${isActive ? "header__link_active" : ""}`}>Сохранённые фильмы</NavLink>
         </div>
         <button className="account-btn" type="button" onClick={handleProfileClick}>Аккаунт</button>
       </>)}
 
       {!loggedIn && (
         <nav className="header__auth-container">
-          <Link className="header__signup" to="/signup">Регистрация</Link>
+          <Link className="header__signup" to={SIGNUP_PATH}>Регистрация</Link>
           <button className="header__signin" type="button" onClick={handleSignInClick}>Войти</button>
         </nav>
       )}
 
-      {windowWidth <= 800 && (
+      {windowWidth <= WINDOW_WIDTH_BURGER && (
         <Navigation isOpen={isBurgerClicked} handleCloseClick={handleBurgerClick} handleProfileClick={handleProfileClick}/>
       )}
     </header>
